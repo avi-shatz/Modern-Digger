@@ -1,5 +1,4 @@
 #include "Resources.h"
-#include "constants.h"
 
 Resources::Resources()
 {
@@ -20,27 +19,42 @@ Resources::Resources()
 
 }
 
-sf::Texture & Resources::get_monster_texture()
+sf::Sprite Resources::get_monster_sprite(sf::Vector2f position)const
 {
-	return m_monster;
+	sf::Sprite sprite(m_monster);
+	sprite.setScale({ 0.05, 0.05 });
+	sprite.setPosition(position);
+	return sprite;
 }
 
-sf::Texture & Resources::get_digger_texture()
+sf::Sprite Resources::get_digger_sprite(sf::Vector2f position)const
 {
-	return m_digger;
+	sf::Sprite sprite(m_digger);
+	sprite.setScale({ 0.04, 0.04 });
+	sprite.setPosition(position);
+	return sprite;
 }
 
-sf::Texture& Resources::get_diamond_texture()
+sf::Sprite Resources::get_diamond_sprite(sf::Vector2f position)const
 {
-	return m_diamond;
+	sf::Sprite sprite(m_diamond);
+	sprite.setScale({ 0.1, 0.1 });
+	sprite.setPosition(position);
+	return sprite;
 }
 
-sf::Texture& Resources::get_wall_texture()
+sf::Sprite Resources::get_wall_sprite(sf::Vector2f position)const
 {
-	return m_wall;
+	sf::Sprite sprite(m_wall);
+	sprite.setScale({ 0.123, 0.19 });
+	sprite.setPosition(position);
+	return sprite;
 }
 
-sf::Texture& Resources::get_stones_texture()
+sf::Sprite Resources::get_stones_sprite(sf::Vector2f position)const
 {
-	return m_stones;
+	sf::Sprite sprite(m_stones);
+	sprite.setScale({ 0.1, 0.1 });
+	sprite.setPosition(position);
+	return sprite;
 }

@@ -1,10 +1,11 @@
 #include "Monster.h"
 
 
-Monster::Monster()
+Monster::Monster(sf::Sprite sprite)
+	:Movable_Object(sprite)
 {
 }
 
-Monster::~Monster()
+void Monster::move(float pix_move, const Digger& digger, const std::vector<Wall*> wall_vec, const sf::RectangleShape m_rectangle)
 {
 }

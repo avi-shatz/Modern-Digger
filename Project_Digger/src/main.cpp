@@ -3,8 +3,7 @@
 
 int main()
 {
-
-    return 0;
+    Controller().run();
 }
 
 //    using namespace std::chrono_literals;
