@@ -11,7 +11,7 @@ public:
 
 private:
 	bool is_valid_move(const sf::Vector2f position, const std::vector<Wall*> wall_vec, const sf::RectangleShape rectangle) const;
-	Dir m_temp_direction; // for passing on walls
+	bool m_chase_digger; // for passing on walls
 	sf::Vector2f m_temp_move;
 };
 

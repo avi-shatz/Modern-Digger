@@ -2,7 +2,7 @@
 
 
 Smart_Monster::Smart_Monster(sf::Sprite sprite)
-	:Monster(sprite), m_temp_direction(Dir::Non)
+	:Monster(sprite), m_chase_digger(true)
 { 
 }
 
@@ -12,7 +12,7 @@ void Smart_Monster::move(float pix_move, const Digger& digger, const std::vector
     sf::Vector2f position = get_position();
     sf::Vector2f digger_position = digger.get_position();
 
-    if (m_temp_direction == Dir::Non &&
+    if (m_chase_digger &&
         abs(digger_position.x - position.x) < 300 &&
         abs(digger_position.y - position.y) < 300)
     { 
@@ -50,10 +50,10 @@ void Smart_Monster::move(float pix_move, const Digger& digger, const std::vector
         sf::Vector2f temp_position =
             sf::Vector2f{ m_sprite.getPosition().x + m_temp_move.x ,
                           m_sprite.getPosition().y + m_temp_move.y };
-        if(m_temp_direction != Dir::Non && 
+        if(!m_chase_digger &&
            is_valid_move(temp_position, wall_vec, rectangle))
         {
-            m_temp_direction = Dir::Non;
+            m_chase_digger = true;
             movement = m_temp_move;
             break;
         }
@@ -62,8 +62,8 @@ void Smart_Monster::move(float pix_move, const Digger& digger, const std::vector
 
         if (!is_valid_move(new_position, wall_vec, rectangle))
         {
+            m_chase_digger = !m_chase_digger;
             m_temp_move = movement;
-            m_temp_direction = m_direction;
             auto rand = random_generator(1, 4);
             m_direction = (Dir)rand;
         }
