@@ -7,9 +7,11 @@ public:
 	Smart_Monster (sf::Sprite sprite);
 
 
-	virtual void move(float pix_move, const Digger& digger, const std::vector<Wall*> wall_vec, const sf::RectangleShape m_rectangle) override;
+	virtual void move(float pix_move, const Digger& digger, const std::vector<Wall*> wall_vec, const sf::RectangleShape rectangle) override;
 
 private:
-	bool is_valid_move(const sf::Vector2f position, const std::vector<Wall*> wall_vec, const sf::RectangleShape m_rectangle) const;
+	bool is_valid_move(const sf::Vector2f position, const std::vector<Wall*> wall_vec, const sf::RectangleShape rectangle) const;
+	Dir m_temp_direction; // for passing on walls
+	sf::Vector2f m_temp_move;
 };
 

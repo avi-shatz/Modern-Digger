@@ -90,7 +90,6 @@ void Controller::run()
 		else
 		{
 			continue;
-			//position = {0, 0};
 		}
 		m_digger.move(movement, m_wall_vec, m_rectangle);
 	}
@@ -185,7 +184,7 @@ void Controller::init_level()
 
 			sf::Vector2f position{ m_rectangle.getPosition().x + c * OBJECT_WIDTH,
 				m_rectangle.getPosition().y + r * OBJECT_HEIGHT };
-			std::cout << m_rectangle.getSize().x/m_columns << " " << m_rectangle.getSize().y/m_rows << std::endl;
+			
 
 			sf::Sprite sprite;
 			char ch = m_board[r][c];

@@ -5,7 +5,7 @@ Stupid_Monster::Stupid_Monster(sf::Sprite sprite)
 {
 }
 
-void Stupid_Monster::move(float pix_move, const Digger& digger, const std::vector<Wall*> wall_vec, const sf::RectangleShape m_rectangle)
+void Stupid_Monster::move(float pix_move, const Digger& digger, const std::vector<Wall*> wall_vec, const sf::RectangleShape rectangle)
 {
 	
     /*if (rand > 3)
@@ -40,9 +40,9 @@ void Stupid_Monster::move(float pix_move, const Digger& digger, const std::vecto
         }
 
         sf::Vector2f new_position = sf::Vector2f{ m_sprite.getPosition().x + movement.x , m_sprite.getPosition().y + movement.y };
-        if (!is_valid_move(new_position, wall_vec, m_rectangle))
+        if (!is_valid_move(new_position, wall_vec, rectangle))
         {
-            auto rand = random_generator(0, 3);
+            auto rand = random_generator(1, 4);
             m_direction = (Dir)rand;
         }
         else
@@ -51,7 +51,7 @@ void Stupid_Monster::move(float pix_move, const Digger& digger, const std::vecto
 	m_sprite.move(movement);
 }
 
-bool Stupid_Monster::is_valid_move(const sf::Vector2f position, const std::vector<Wall*> wall_vec, const sf::RectangleShape m_rectangle) const
+bool Stupid_Monster::is_valid_move(const sf::Vector2f position, const std::vector<Wall*> wall_vec, const sf::RectangleShape rectangle) const
 {
     float height = m_sprite.getGlobalBounds().height;
     float width = m_sprite.getGlobalBounds().width;
@@ -60,13 +60,13 @@ bool Stupid_Monster::is_valid_move(const sf::Vector2f position, const std::vecto
     sf::Vector2f position3 = { position.x, position.y + height };
     sf::Vector2f position4 = { position.x + width, position.y + height };
 
-    if (!m_rectangle.getGlobalBounds().contains(position))
+    if (!rectangle.getGlobalBounds().contains(position))
         return false;
-    if (!m_rectangle.getGlobalBounds().contains(position2))
+    if (!rectangle.getGlobalBounds().contains(position2))
         return false;
-    if (!m_rectangle.getGlobalBounds().contains(position3))
+    if (!rectangle.getGlobalBounds().contains(position3))
         return false;
-    if (!m_rectangle.getGlobalBounds().contains(position4))
+    if (!rectangle.getGlobalBounds().contains(position4))
         return false;
 
     for (auto& wall : wall_vec)
