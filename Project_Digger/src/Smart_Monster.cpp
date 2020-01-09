@@ -1,12 +1,12 @@
 #include "Smart_Monster.h"
-
+#include "Edible_Object.h"
 
 Smart_Monster::Smart_Monster(sf::Sprite sprite)
 	:Monster(sprite), m_chase_digger(true)
 { 
 }
 
-void Smart_Monster::move(float pix_move, const Digger& digger, const std::vector<Wall*> wall_vec, const sf::RectangleShape rectangle)
+void Smart_Monster::move(float pix_move, const Digger& digger, const std::vector<Wall*> wall_vec, const std::vector<Edible_Object*> ed_vec, const sf::RectangleShape rectangle)
 {
     
     sf::Vector2f position = get_position();
@@ -51,7 +51,7 @@ void Smart_Monster::move(float pix_move, const Digger& digger, const std::vector
             sf::Vector2f{ m_sprite.getPosition().x + m_temp_move.x ,
                           m_sprite.getPosition().y + m_temp_move.y };
         if(!m_chase_digger &&
-           is_valid_move(temp_position, wall_vec, rectangle))
+           is_valid_move(temp_position, wall_vec, ed_vec, rectangle))
         {
             m_chase_digger = true;
             movement = m_temp_move;
@@ -60,7 +60,7 @@ void Smart_Monster::move(float pix_move, const Digger& digger, const std::vector
 
         sf::Vector2f new_position = sf::Vector2f{ m_sprite.getPosition().x + movement.x , m_sprite.getPosition().y + movement.y };
 
-        if (!is_valid_move(new_position, wall_vec, rectangle))
+        if (!is_valid_move(new_position, wall_vec, ed_vec, rectangle))
         {
             m_chase_digger = !m_chase_digger;
             m_temp_move = movement;
@@ -74,8 +74,10 @@ void Smart_Monster::move(float pix_move, const Digger& digger, const std::vector
 
 }
 
-bool Smart_Monster::is_valid_move(const sf::Vector2f position, const std::vector<Wall*> wall_vec, const sf::RectangleShape rectangle) const
+bool Smart_Monster::is_valid_move(const sf::Vector2f position, const std::vector<Wall*> wall_vec, const std::vector<Edible_Object*> ed_vec, const sf::RectangleShape rectangle) const
 {
+    auto temp_monster = *this;
+    temp_monster.m_sprite.setPosition(position);
     float height = m_sprite.getGlobalBounds().height;
     float width = m_sprite.getGlobalBounds().width;
 
@@ -94,14 +96,16 @@ bool Smart_Monster::is_valid_move(const sf::Vector2f position, const std::vector
 
     for (auto& wall : wall_vec)
     {
-        if (wall->contains(position))
+        if(wall->intersects(temp_monster))
+            return false;
+        /*if (wall->contains(position))
             return false;
         if (wall->contains(position2))
             return false;
         if (wall->contains(position3))
             return false;
         if (wall->contains(position4))
-            return false;
+            return false;*/
     }
 
     return true;

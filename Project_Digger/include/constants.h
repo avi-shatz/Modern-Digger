@@ -10,10 +10,13 @@ const int LIVES = 3;
 // resouses 
 const std::string WINDOW_TITLE = "Digger Editor";
 const std::string MONSTER_IMAGE = "monster_image.png";
+const std::string SMART_MONSTER_IMAGE = "monster_dragon.png";
 const std::string DIGGER_IMAGE = "digger_image.png";
 const std::string DIAMOND_IMAGE = "diamond_image.png";
 const std::string WALL_IMAGE = "wall_brick_image.png";
 const std::string STONE_IMAGE = "stone_image.png";
+const std::string WIN_MASSAGE = "you_win_colorful.png";
+const std::string LOSE_MASSAGE = "game_over.png";
 const std::string DELETE_IMAGE = "delete_image1.png";
 const std::string NEW_BUTTON = "button_new.png";
 const std::string SAVE_BUTTON = "button_save.png";

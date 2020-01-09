@@ -6,6 +6,6 @@ Score_Gift::Score_Gift(sf::Sprite sprite)
 {
 }
 
-void Score_Gift::handle_collision(Data& m)
+void Score_Gift::handle_collision(Data& data, Movable_Object* obj_ptr)
 {
 }

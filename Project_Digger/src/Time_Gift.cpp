@@ -6,6 +6,6 @@ Time_Gift::Time_Gift(sf::Sprite sprite)
 {
 }
 
-void Time_Gift::handle_collision(Data& m)
+void Time_Gift::handle_collision(Data& data, Movable_Object* obj_ptr)
 {
 }

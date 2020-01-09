@@ -1,11 +1,12 @@
 #include "Stupid_Monster.h"
+#include "Edible_Object.h"
 
 Stupid_Monster::Stupid_Monster(sf::Sprite sprite)
 	: Monster(sprite)
 {
 }
 
-void Stupid_Monster::move(float pix_move, const Digger& digger, const std::vector<Wall*> wall_vec, const sf::RectangleShape rectangle)
+void Stupid_Monster::move(float pix_move, const Digger& digger, const std::vector<Wall*> wall_vec, const std::vector<Edible_Object*> ed_vec, const sf::RectangleShape rectangle)
 {
 	
     /*if (rand > 3)
@@ -40,7 +41,7 @@ void Stupid_Monster::move(float pix_move, const Digger& digger, const std::vecto
         }
 
         sf::Vector2f new_position = sf::Vector2f{ m_sprite.getPosition().x + movement.x , m_sprite.getPosition().y + movement.y };
-        if (!is_valid_move(new_position, wall_vec, rectangle))
+        if (!is_valid_move(new_position, wall_vec, ed_vec, rectangle))
         {
             auto rand = random_generator(1, 4);
             m_direction = (Dir)rand;
@@ -51,7 +52,7 @@ void Stupid_Monster::move(float pix_move, const Digger& digger, const std::vecto
 	m_sprite.move(movement);
 }
 
-bool Stupid_Monster::is_valid_move(const sf::Vector2f position, const std::vector<Wall*> wall_vec, const sf::RectangleShape rectangle) const
+bool Stupid_Monster::is_valid_move(const sf::Vector2f position, const std::vector<Wall*> wall_vec, const std::vector<Edible_Object*> ed_vec, const sf::RectangleShape rectangle) const
 {
     float height = m_sprite.getGlobalBounds().height;
     float width = m_sprite.getGlobalBounds().width;

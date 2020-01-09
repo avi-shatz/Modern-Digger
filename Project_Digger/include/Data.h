@@ -23,6 +23,7 @@ public:
 	void inc_level();
 	void set_time(int time);
 	void set_diamonds_amount(int diamonds_amount);
+	void dec_diamonds_amount();
 
 private:
 

@@ -5,6 +5,6 @@ Stone_Gift::Stone_Gift(sf::Sprite sprite)
 {
 }
 
-void Stone_Gift::handle_collision(Data& m)
+void Stone_Gift::handle_collision(Data& data, Movable_Object* obj_ptr)
 {
 }

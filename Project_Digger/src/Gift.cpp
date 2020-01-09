@@ -6,6 +6,6 @@ Gift::Gift(sf::Sprite sprite)
 {
 }
 
-void Gift::handle_collision(Data& m)
+void Gift::handle_collision(Data& data, Movable_Object* obj_ptr)
 {
 }

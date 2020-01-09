@@ -6,6 +6,6 @@ Monster::Monster(sf::Sprite sprite)
 {
 }
 
-void Monster::move(float pix_move, const Digger& digger, const std::vector<Wall*> wall_vec, const sf::RectangleShape rectangle)
+void Monster::move(float pix_move, const Digger& digger, const std::vector<Wall*> wall_vec, const std::vector<Edible_Object*> ed_vec, const sf::RectangleShape rectangle)
 {
 }

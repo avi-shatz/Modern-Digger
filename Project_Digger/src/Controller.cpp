@@ -2,6 +2,7 @@
 #include <iostream>
 #include <sstream>
 #include "utilities.h"
+#include <experimental/vector>
 
 Controller::Controller()
 	:m_window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Digger Game"),
@@ -30,13 +31,28 @@ void Controller::run()
 	{
 		if (!m_data.get_lives())
 		{
+			m_window.close();
+			end_game_announcement(LOSE_MASSAGE);
+			return; // temparary
 			//if player loose exit 2 loops (go back to menu)
 			keep_playing = false;
 			break;
 		}
-		if (!m_data.get_diamonds_amount())
-			break;//if player finished exit 1 loop (go to next level)
 
+		if (!m_data.get_diamonds_amount())
+		{
+			m_window.close();
+			end_game_announcement(WIN_MASSAGE);
+			return;// temparary
+			break;//if player finished exit 1 loop (go to next level)
+		}
+		if (!m_data.get_stones_left())
+		{
+			m_window.close();
+			end_game_announcement(LOSE_MASSAGE);
+			return;// temparary
+			break;//if player finished exit 1 loop (go to next level)
+		}
 		draw();
 
 		// Handle events
@@ -66,7 +82,8 @@ void Controller::run()
 
 		for (auto monster : m_monster_vec)
 		{
-			monster->move(MONSTER_SPEED * t, m_digger, m_wall_vec, m_rectangle);
+			monster->move(MONSTER_SPEED * t, m_digger, m_wall_vec, m_edible_vec, m_rectangle);
+			handle_monster_collision(monster);
 		}
 
 		sf::Vector2f movement;
@@ -92,6 +109,7 @@ void Controller::run()
 			continue;
 		}
 		m_digger.move(movement, m_wall_vec, m_rectangle);
+		handle_digger_collision();
 	}
 
 }
@@ -102,14 +120,7 @@ void Controller::draw()
 
 	m_window.draw(m_rectangle);
 
-	m_digger.draw(m_window);
-
-	for (auto monster : m_monster_vec)
-	{
-		monster->draw(m_window);
-	}
-
-	for (auto edible : m_edibler_vec)
+	for (auto edible : m_edible_vec)
 	{
 		edible->draw(m_window);
 	}
@@ -117,6 +128,13 @@ void Controller::draw()
 	for (auto wall : m_wall_vec)
 	{
 		wall->draw(m_window);
+	}
+
+	m_digger.draw(m_window);
+
+	for (auto monster : m_monster_vec)
+	{
+		monster->draw(m_window);
 	}
 
 	m_window.display();
@@ -139,6 +157,7 @@ bool Controller::read_level()
 	int stones_left, seconds;
 	istr >> m_rows >> m_columns >> stones_left >> seconds;
 
+	m_data.set_stones_left(stones_left);
 	float rec_width =  m_columns * OBJECT_WIDTH;
 	float rec_height =  m_rows * OBJECT_HEIGHT;
 
@@ -200,23 +219,22 @@ void Controller::init_level()
 
 			case MONSTER:
 			{
-				sprite = m_res.get_monster_sprite(position);
 				auto rand = random_generator(0, 1);
 
 				if (rand == 0)
 				{
-					m_monster_vec.push_back(new Smart_Monster(sprite));
+					m_monster_vec.push_back(new Smart_Monster(m_res.get_smart_monster_sprite(position)));
 				}
 				else
 				{
-					m_monster_vec.push_back(new Stupid_Monster(sprite));
+					m_monster_vec.push_back(new Stupid_Monster(m_res.get_stupid_monster_sprite(position)));
 				}
 			}
 			break;
 
 			case STONE:
 				sprite = m_res.get_stones_sprite(position);
-				m_edibler_vec.push_back(new Stone(sprite));
+				m_edible_vec.push_back(new Stone(sprite));
 				break;
 
 			case WALL:
@@ -226,7 +244,7 @@ void Controller::init_level()
 
 			case DIAMOND:
 				sprite = m_res.get_diamond_sprite(position);
-				m_edibler_vec.push_back(new Diamond(sprite));
+				m_edible_vec.push_back(new Diamond(sprite));
 				m_data.set_diamonds_amount(m_data.get_diamonds_amount()+1);
 				break;
 			}
@@ -239,3 +257,47 @@ void Controller::add_spaces_to_string(std::string& line)
 		line += SPACE;
 }
 
+void Controller::handle_digger_collision()
+{
+	for (auto& edible : m_edible_vec)
+	{
+		if (m_digger.intersects(*edible))
+			edible->handle_collision(m_data, &m_digger);
+	}
+
+	std::experimental::erase_if(m_edible_vec, [](const auto& edible) 
+		{ return edible->is_eaten();});
+	
+}
+
+void Controller::handle_monster_collision(Monster* monster)
+{
+}
+
+void end_game_announcement(std::string imaje)
+{
+	auto window = sf::RenderWindow(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "winner");
+
+	auto texture = sf::Texture() ;
+	texture.loadFromFile(imaje);
+
+	auto sprite = sf::Sprite(texture);
+	sprite.setPosition(0, 0);
+	sprite.scale({ 0.5f, 0.35f });
+
+	// Handle events
+	sf::Event event;
+	while (window.waitEvent(event))
+	{
+		switch (event.type)
+		{
+		case sf::Event::Closed:
+			window.close();
+			//exit program
+			return;
+		}
+		window.clear(RECTANGLE_COLOR_LIGHT);
+		window.draw(sprite);
+		window.display();
+	}
+}

@@ -76,3 +76,8 @@ void Data::set_diamonds_amount(int diamonds_amount)
 {
 	m_diamonds_amount = diamonds_amount;
 }
+
+void Data::dec_diamonds_amount()
+{
+	m_diamonds_amount--;
+}
