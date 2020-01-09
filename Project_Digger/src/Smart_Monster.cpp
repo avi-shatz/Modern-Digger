@@ -1,8 +1,10 @@
 #include "Smart_Monster.h"
 #include "Edible_Object.h"
+#include "Stone.h"
 
 Smart_Monster::Smart_Monster(sf::Sprite sprite)
-	:Monster(sprite), m_chase_digger(true)
+	:Monster(sprite), m_chase_digger(true),
+    m_search_width_first((bool)random_generator(0, 1))
 { 
 }
 
@@ -16,14 +18,29 @@ void Smart_Monster::move(float pix_move, const Digger& digger, const std::vector
         abs(digger_position.x - position.x) < 300 &&
         abs(digger_position.y - position.y) < 300)
     { 
-        if (digger_position.x - position.x < 1)
-            m_direction = Dir::Left;
-        else if (digger_position.x - position.x > 2)
-            m_direction = Dir::Right;
-        else if (digger_position.y < position.y)
-            m_direction = Dir::Up;
-        else
-            m_direction = Dir::Down;
+        if (m_search_width_first) 
+        {
+            if (digger_position.x - position.x < 1)
+                m_direction = Dir::Left;
+            else if (digger_position.x - position.x > 2)
+                m_direction = Dir::Right;
+            else if (digger_position.y < position.y)
+                m_direction = Dir::Up;
+            else
+                m_direction = Dir::Down;
+        }else
+        {
+
+            if (digger_position.y - position.y < 1)
+                m_direction = Dir::Up;
+            else if (digger_position.y - position.y > 2)
+                m_direction = Dir::Down;
+            else if (digger_position.x < position.x)
+                m_direction = Dir::Left;
+            else
+                m_direction = Dir::Right;
+        }
+
     }
     sf::Vector2f movement;
 
@@ -78,6 +95,7 @@ bool Smart_Monster::is_valid_move(const sf::Vector2f position, const std::vector
 {
     auto temp_monster = *this;
     temp_monster.m_sprite.setPosition(position);
+
     float height = m_sprite.getGlobalBounds().height;
     float width = m_sprite.getGlobalBounds().width;
 
@@ -98,15 +116,15 @@ bool Smart_Monster::is_valid_move(const sf::Vector2f position, const std::vector
     {
         if(wall->intersects(temp_monster))
             return false;
-        /*if (wall->contains(position))
-            return false;
-        if (wall->contains(position2))
-            return false;
-        if (wall->contains(position3))
-            return false;
-        if (wall->contains(position4))
-            return false;*/
     }
 
+    for (auto& ed : ed_vec)
+    {
+        if (ed->intersects(temp_monster))
+            if (dynamic_cast<Stone*> (ed))
+                return false;
+            else
+                break;
+    }
     return true;
 }

@@ -6,7 +6,7 @@ class Data
 public:
 	Data();
 
-	void draw();
+	void draw(sf::RenderWindow& window);
 
 	//getters
 	int get_lives()const;
@@ -33,4 +33,14 @@ private:
 	int m_level = 0;
 	int m_time = 0;
 	int m_diamonds_amount = 0;
+
+	sf::Text m_lives_text_in;
+	sf::Text m_lives_text_out;
+	sf::Text m_level_text_in;
+	sf::Text m_level_text_out;
+	sf::Text m_stones_text_in;
+	sf::Text m_stones_text_out;
+	sf::Text m_diamonds_text_in;
+	sf::Text m_diamonds_text_out;
+	sf::Font m_font;
 };

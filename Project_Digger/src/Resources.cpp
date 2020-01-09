@@ -33,7 +33,7 @@ sf::Sprite Resources::get_stupid_monster_sprite(sf::Vector2f position)const
 sf::Sprite Resources::get_smart_monster_sprite(sf::Vector2f position)const
 {
 	sf::Sprite sprite(m_smart_monster);
-	sprite.setScale({ 0.08f, 0.08f });
+	sprite.setScale({ 0.07f, 0.07f });
 	sprite.setPosition(position);
 	return sprite;
 }

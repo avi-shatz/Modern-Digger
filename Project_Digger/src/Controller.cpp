@@ -9,6 +9,8 @@ Controller::Controller()
 	m_res(), m_data(), m_ifs(FILE_PATH),
 	m_digger(m_res.get_digger_sprite({ 0, 0 }))
 {
+	//m_window.setFramerateLimit(120);
+
 	if (m_ifs.bad())
 	{
 		std::cerr << "file is not open" << std::endl;
@@ -80,13 +82,8 @@ void Controller::run()
 
 		float t = clock.restart().asSeconds();
 
-		for (auto monster : m_monster_vec)
-		{
-			monster->move(MONSTER_SPEED * t, m_digger, m_wall_vec, m_edible_vec, m_rectangle);
-			handle_monster_collision(monster);
-		}
-
 		sf::Vector2f movement;
+		bool move = true;
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
@@ -106,10 +103,21 @@ void Controller::run()
 		}
 		else
 		{
-			continue;
+			move = false;
 		}
-		m_digger.move(movement, m_wall_vec, m_rectangle);
-		handle_digger_collision();
+
+		if (move) 
+		{
+			m_digger.move(movement, m_wall_vec, m_rectangle);
+			handle_digger_collision();
+		}
+
+		for (auto monster : m_monster_vec)
+		{
+			monster->move(MONSTER_SPEED * t, m_digger, m_wall_vec, m_edible_vec, m_rectangle);
+			handle_monster_collision(monster);
+		}
+
 	}
 
 }
@@ -118,6 +126,7 @@ void Controller::draw()
 {
 	m_window.clear(MENU_BACKGROUND);
 
+	m_data.draw(m_window);
 	m_window.draw(m_rectangle);
 
 	for (auto edible : m_edible_vec)
@@ -265,8 +274,20 @@ void Controller::handle_digger_collision()
 			edible->handle_collision(m_data, &m_digger);
 	}
 
-	std::experimental::erase_if(m_edible_vec, [](const auto& edible) 
-		{ return edible->is_eaten();});
+	for (auto& edible : m_edible_vec)
+	{
+		if (edible->is_eaten()) 
+		{
+			delete edible;
+			edible = nullptr;
+		}	
+	}
+
+	std::experimental::erase_if(m_edible_vec, [](const auto& edible)
+		{ return !edible; });
+
+	/*std::experimental::erase_if(m_edible_vec, [](const auto& edible) 
+		{ return edible->is_eaten();});*/
 	
 }
 

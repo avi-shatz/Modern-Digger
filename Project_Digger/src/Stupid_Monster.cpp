@@ -1,5 +1,6 @@
 #include "Stupid_Monster.h"
 #include "Edible_Object.h"
+#include "Stone.h"
 
 Stupid_Monster::Stupid_Monster(sf::Sprite sprite)
 	: Monster(sprite)
@@ -9,14 +10,6 @@ Stupid_Monster::Stupid_Monster(sf::Sprite sprite)
 void Stupid_Monster::move(float pix_move, const Digger& digger, const std::vector<Wall*> wall_vec, const std::vector<Edible_Object*> ed_vec, const sf::RectangleShape rectangle)
 {
 	
-    /*if (rand > 3)
-        if(rand > 10)
-            rand = 2;
-        else
-            rand = 1;*/
-    
-    
-
     sf::Vector2f movement;
 
     while (true) {
@@ -54,6 +47,9 @@ void Stupid_Monster::move(float pix_move, const Digger& digger, const std::vecto
 
 bool Stupid_Monster::is_valid_move(const sf::Vector2f position, const std::vector<Wall*> wall_vec, const std::vector<Edible_Object*> ed_vec, const sf::RectangleShape rectangle) const
 {
+    auto temp_monster = *this;
+    temp_monster.m_sprite.setPosition(position);
+
     float height = m_sprite.getGlobalBounds().height;
     float width = m_sprite.getGlobalBounds().width;
 
@@ -72,15 +68,19 @@ bool Stupid_Monster::is_valid_move(const sf::Vector2f position, const std::vecto
 
     for (auto& wall : wall_vec)
     {
-        if (wall->contains(position))
-            return false;
-        if (wall->contains(position2))
-            return false;
-        if (wall->contains(position3))
-            return false;
-        if (wall->contains(position4))
+        if (wall->intersects(temp_monster))
             return false;
     }
+
+    for (auto& ed : ed_vec)
+    {
+        if (ed->intersects(temp_monster))
+            if (dynamic_cast<Stone*> (ed))
+                return false;
+            else
+                break;
+    }
+
 
     return true;
 }

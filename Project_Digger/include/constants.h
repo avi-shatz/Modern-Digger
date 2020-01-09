@@ -20,7 +20,17 @@ const std::string LOSE_MASSAGE = "game_over.png";
 const std::string DELETE_IMAGE = "delete_image1.png";
 const std::string NEW_BUTTON = "button_new.png";
 const std::string SAVE_BUTTON = "button_save.png";
+const std::string FONT_PATH = "C:/Windows/Fonts/ahronbd.ttf";
 
+//data
+const std::string TXT_LIVES = "Lives: ";
+const std::string TXT_STONES = "Stones Left: ";
+const std::string TXT_TIME = "Time: ";
+const std::string TXT_LEVEL = "Level: ";
+const std::string TXT_SCORE = "Score: ";
+const std::string TXT_DIAMONDS = "Diamonds: ";
+const float TXT_SHORT_SPACE = 50;
+const float TXT_LONG_SPACE = 90;
 
 const std::string FILE_PATH = "Board.txt";
 //const char FILE_PATH_CHAR_ARRAY[] = "board.txt";
@@ -32,7 +42,7 @@ const int WINDOW_WIDTH = 1200;
 const int WINDOW_HEIGHT = 800;
 const float OBJECT_WIDTH = 80;
 const float OBJECT_HEIGHT = 80;
-const int DATA_HEIGHT = 40;
+const int DATA_HEIGHT = 50;
 //const float RECTANGLE_SIZE = 130;
 //const float BUTTON_SIZE = 110;
 //const float BUTTON_SPACE = 30;
@@ -40,6 +50,7 @@ const int DATA_HEIGHT = 40;
 //ui
 const sf::Color RECTANGLE_COLOR_LIGHT = sf::Color(246, 223, 227);
 const sf::Color RECTANGLE_COLOR_DARK = sf::Color(255, 153, 204);
+const sf::Color TXT_COLOR_DARK = sf::Color(67, 44, 135);
 const sf::Color RECTANGLE_COLOR_NOT_ALLOWD = sf::Color(255, 102, 102);
 const sf::Color LINE_COLOR = sf::Color(129, 13, 152);
 const sf::Color MENU_BACKGROUND = sf::Color(229, 204, 255);
