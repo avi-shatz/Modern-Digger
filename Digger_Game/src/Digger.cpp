@@ -35,7 +35,7 @@ void Digger::setSprite(const Resources& res, const sf::Vector2f position)
 	m_spriteL.setTexture(Resources::instance().getDiggerL());
 
 	m_spriteF.setTexture(Resources::instance().getDiggerF());
-	m_spriteF.setScale({ 0.08f, 0.08 });
+	m_spriteF.setScale({ 0.04f, 0.04f });
 }
 
 void Digger::changeSpriteDirection(sf::Vector2f movement)
