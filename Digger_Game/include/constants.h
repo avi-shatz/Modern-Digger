@@ -14,14 +14,7 @@ const std::string LOSE_MASSAGE = "game_over.png";
 const std::string FONT_PATH = "C:/Windows/Fonts/ahronbd.ttf";
 
 //data
-const std::string TXT_LIVES = "Lives: ";
-const std::string TXT_STONES = "Stones Left: ";
-const std::string TXT_TIME = "Time: ";
-const std::string TXT_LEVEL = "Level: ";
-const std::string TXT_SCORE = "Score: ";
-const std::string TXT_DIAMONDS = "Diamonds: ";
-const float TXT_SHORT_SPACE = 50;
-const float TXT_LONG_SPACE = 90;
+
 
 const std::string FILE_PATH = "Board.txt";
 //const char FILE_PATH_CHAR_ARRAY[] = "board.txt";

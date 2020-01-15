@@ -32,6 +32,7 @@ private:
 	Controller();
 	//Controller m_instance;
 
+	void handlePlayerDeath();
 	bool levelOn(bool& keepPlaying);
 	void draw();
 	bool readLevel();
@@ -53,6 +54,8 @@ private:
 	std::vector<std::unique_ptr <EdibleObject>> m_edibleVec;
 	std::vector<std::unique_ptr <Wall>> m_wallVec;
 	
+	int m_levelTime;
+
 	// level board size
 	int m_rows = 0;
 	int m_columns = 0;

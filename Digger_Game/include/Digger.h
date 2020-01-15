@@ -14,6 +14,10 @@ public:
 
 private:
 	void setSprite(const Resources& res, const sf::Vector2f position);
+	void changeSpriteDirection(sf::Vector2f movement);
 
+	sf::Sprite m_spriteL;
+	sf::Sprite m_spriteR;
+	sf::Sprite m_spriteF;
 };
 

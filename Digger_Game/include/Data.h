@@ -14,7 +14,7 @@ public:
 	int getScore()const;
 	int getStonesLeft()const;
 	int getLevel()const;
-	int getTime()const;
+	int getTimeLeft()const;
 	int getDiamondsAmount()const;
 
 	//setters
@@ -26,6 +26,7 @@ public:
 	void incLevel();	
 	void incDiamondsAmount();
 	void decDiamondsAmount();
+	void decLives();
 
 private:
 
@@ -37,6 +38,9 @@ private:
 	int m_time = 0;
 	int m_diamonds_amount = 0;
 
+	sf::Clock m_levelClock;
+	sf::Font m_font;
+
 	sf::Text m_livesTextIn;
 	sf::Text m_livesTextOut;
 	sf::Text m_levelTextIn;
@@ -45,5 +49,8 @@ private:
 	sf::Text m_stonesTextOut;
 	sf::Text m_diamondsTextIn;
 	sf::Text m_diamondsTextOut;
-	sf::Font m_font;
+	sf::Text m_scoreTextIn;
+	sf::Text m_scoreTextOut;
+	sf::Text m_timeTextIn;
+	sf::Text m_timeTextOut;
 };

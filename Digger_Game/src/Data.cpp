@@ -1,5 +1,15 @@
 #include "Data.h"
+#include <iomanip>
+#include <sstream>
 
+const std::string TXT_LIVES = "Lives: ";
+const std::string TXT_STONES = "Stones Left: ";
+const std::string TXT_TIME = "Time: ";
+const std::string TXT_LEVEL = "Level: ";
+const std::string TXT_SCORE = "Score: ";
+const std::string TXT_DIAMONDS = "Diamonds: ";
+const float TXT_SHORT_SPACE = 50;
+const float TXT_LONG_SPACE = 90;
 
 Data::Data()
 {
@@ -12,9 +22,10 @@ Data::Data()
 	m_livesTextOut.setPosition({ 0 + TXT_SHORT_SPACE, 0 });
 
 	//make all fonts same.
-	m_diamondsTextIn = m_diamondsTextOut = m_levelTextIn
-		= m_levelTextOut = m_stonesTextIn = m_stonesTextOut
-		= m_livesTextIn = m_livesTextOut;
+	m_timeTextIn = m_timeTextOut = m_scoreTextOut =
+		m_scoreTextIn = m_diamondsTextIn = m_diamondsTextOut =
+		m_levelTextIn = m_levelTextOut = m_stonesTextIn = 
+		m_stonesTextOut = m_livesTextIn = m_livesTextOut;
 		
 
 	//init rest of data text
@@ -38,6 +49,18 @@ Data::Data()
 
 	m_diamondsTextIn.setString("");
 	m_diamondsTextIn.setPosition({ 5.8f * TXT_LONG_SPACE + 4 * TXT_SHORT_SPACE, 0 });
+
+	m_scoreTextOut.setString(TXT_SCORE);
+	m_scoreTextOut.setPosition({ 5.8f * TXT_LONG_SPACE + 5 * TXT_SHORT_SPACE, 0 });
+
+	m_scoreTextIn.setString("");
+	m_scoreTextIn.setPosition({ 6.8f * TXT_LONG_SPACE + 5 * TXT_SHORT_SPACE, 0 });
+	
+	m_timeTextOut.setString(TXT_TIME);
+	m_timeTextOut.setPosition({ 6.8f * TXT_LONG_SPACE + 6 * TXT_SHORT_SPACE, 0 });
+
+	m_timeTextIn.setString("");
+	m_timeTextIn.setPosition({ 7.8f * TXT_LONG_SPACE + 6 * TXT_SHORT_SPACE, 0 });
 }
 
 void Data::draw(sf::RenderWindow& window)
@@ -46,6 +69,12 @@ void Data::draw(sf::RenderWindow& window)
 	m_stonesTextIn.setString(std::to_string(m_stonesLeft));
 	m_levelTextIn.setString(std::to_string(m_level));
 	m_diamondsTextIn.setString(std::to_string(m_diamonds_amount));
+	m_scoreTextIn.setString(std::to_string(m_score));
+
+	std::stringstream stream;
+	stream << std::fixed << std::setprecision(1) << m_time - m_levelClock.getElapsedTime().asSeconds();
+
+	m_timeTextIn.setString(stream.str());
 
 	window.draw(m_livesTextOut);
 	window.draw(m_livesTextIn);
@@ -58,12 +87,19 @@ void Data::draw(sf::RenderWindow& window)
 	
 	window.draw(m_diamondsTextOut);
 	window.draw(m_diamondsTextIn);
+	
+	window.draw(m_scoreTextOut);
+	window.draw(m_scoreTextIn);
+	
+	window.draw(m_timeTextOut);
+	window.draw(m_timeTextIn);
 }
 
 void Data::resetLevel()
 {
 	m_stonesLeft = m_allowedStones;
 	m_diamonds_amount = 0;
+	m_levelClock.restart();
 }
 
 //-------------  getters  ---------------------------------------
@@ -88,9 +124,9 @@ int Data::getLevel() const
 	return m_level;
 }
 
-int Data::getTime() const
+int Data::getTimeLeft() const
 {
-	return m_time;
+	return m_time - m_levelClock.getElapsedTime().asSeconds();
 }
 
 int Data::getDiamondsAmount() const
@@ -125,7 +161,8 @@ void Data::incLevel()
 {
 	m_level++;
 	//if advanced level add 200 to score.
-	setScore(m_score+200);
+	if (m_level > 1)
+		setScore(m_score+200);
 }
 
 void Data::setTime(int time)
@@ -141,4 +178,9 @@ void Data::incDiamondsAmount()
 void Data::decDiamondsAmount()
 {
 	m_diamonds_amount--;
+}
+
+void Data::decLives()
+{
+	m_lives--;
 }

@@ -8,10 +8,10 @@
 
 Controller::Controller()
 	:m_window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Digger Game"),
-	m_res(), m_data(), m_ifs(FILE_PATH),
-	m_digger(m_res, {0,0})
+	m_res(Resources::instance()), m_data(), m_ifs(FILE_PATH),
+	m_digger(m_res, {0,0}), m_levelTime()
 {
-	//m_window.setFramerateLimit(90);
+	m_window.setFramerateLimit(90);
 
 	if (m_ifs.bad()) {
 		std::cerr << "coudn't open Board.txt" << std::endl;
@@ -65,6 +65,7 @@ void Controller::run()
 
 			//handel user input and calls digger.move() accordingly
 			processEvents(deltaTime);
+			handlePlayerDeath();
 		}
 	}
 
@@ -83,6 +84,19 @@ sf::Vector2f Controller::getDiggerPosition()
 
 //----- check if level ended  -------
 
+void Controller::handlePlayerDeath()
+{
+	for (auto& monster : m_monsterVec)
+	{
+		if (monster->intersects(m_digger))
+		{
+			m_data.decLives();
+			resetMovablePosition();
+			break;
+		}
+	}
+}
+
 bool Controller::levelOn(bool& keepPlaying)
 {
 	if (!m_data.getLives())
@@ -96,10 +110,11 @@ bool Controller::levelOn(bool& keepPlaying)
 		//if player finished exit 1 loop (go to next level)
 		return false; 
 
-
-	if (!m_data.getStonesLeft())
-		//resetLevel()
-		return false;
+	if (!m_data.getStonesLeft() || m_data.getTimeLeft() <= 0)
+	{
+		initLevel();
+		m_data.decLives();
+	}
 
 
 	return true;
@@ -199,10 +214,11 @@ bool Controller::readLevel()
 
 	// reading the first to numbers from file 
 	auto istr = std::istringstream(line);
-	int allowedStones, seconds;
-	istr >> m_rows >> m_columns >> allowedStones >> seconds;
+	int allowedStones;
+	istr >> m_rows >> m_columns >> allowedStones >> m_levelTime;
 
 	m_data.setAllowedStones(allowedStones);
+	
 	float rec_width =  m_columns * OBJECT_WIDTH;
 	float rec_height =  m_rows * OBJECT_HEIGHT;
 
@@ -237,10 +253,13 @@ bool Controller::readLevel()
 void Controller::initLevel()
 {
 	m_data.resetLevel();
+	m_data.setTime(m_levelTime);
 
 	m_edibleVec.clear();
 	m_monsterVec.clear();
 	m_wallVec.clear();
+
+	int monsterCnt = 0; 
 
 	for (int r = 0; r < m_rows; r++)
 		for (int c = 0; c < m_columns; c++)
@@ -262,10 +281,10 @@ void Controller::initLevel()
 
 			case MONSTER:
 			    {
-				// chose randomly between smart and stupid monsters
-				  auto rand = random_generator(0, 1); 
-
-				  if (rand == 0)
+				monsterCnt++;
+				// chose between smart and stupid monsters
+				  
+				  if (monsterCnt % 2 == 0)
 					  m_monsterVec.push_back(std::make_unique<SmartMonster>(m_res, position));
 				  else
 					  m_monsterVec.push_back(std::make_unique<StupidMonster>(m_res, position));

@@ -1,6 +1,8 @@
 ﻿configure_file ("Board.txt" ${CMAKE_BINARY_DIR} COPYONLY)
 
-configure_file ("digger_image.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("digger_left_image.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("digger_right_image.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("digger_front_image.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("diamond_image.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("monster_image.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("monster_dragon.png" ${CMAKE_BINARY_DIR} COPYONLY)

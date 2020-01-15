@@ -10,6 +10,7 @@ void Diamond::eatWithUpdate(Data& data)
 {
 	eat();
 	data.decDiamondsAmount();
+	data.setScore(data.getScore() + 10);
 }
 
 
