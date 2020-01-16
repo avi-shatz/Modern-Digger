@@ -4,10 +4,10 @@
 
 #include "Stone.h"
 
-StupidMonster::StupidMonster(const Resources& res, const sf::Vector2f position)
+StupidMonster::StupidMonster(const sf::Vector2f position)
     :Monster(position)
 {
-    setSprite(res, position);
+    setSprite(position);
 }
 
 void StupidMonster::move(float deltaTime)
@@ -50,9 +50,9 @@ void StupidMonster::move(float deltaTime)
     }
 }
 
-void StupidMonster::setSprite(const Resources& res, const sf::Vector2f position)
+void StupidMonster::setSprite(const sf::Vector2f position)
 {
-    m_sprite.setTexture(res.getStupidMonster());
+    m_sprite.setTexture(Resources::instance().getStupidMonster());
     m_sprite.setScale({ 0.05f, 0.05f });
     m_sprite.setPosition(position);
 }

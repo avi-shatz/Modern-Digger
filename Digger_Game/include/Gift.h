@@ -5,7 +5,7 @@ class Gift : public EdibleObject
 {
 public:
 
-	//virtual ~Gift() = 0 {}
+	virtual ~Gift() = 0 {}
 
 private:
 

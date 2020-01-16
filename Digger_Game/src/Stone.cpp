@@ -1,9 +1,9 @@
 #include "Stone.h"
 
 
-Stone::Stone(const Resources& res, const sf::Vector2f position)
+Stone::Stone(const sf::Vector2f position)
 {
-	setSprite(res, position);
+	setSprite(position);
 }
 
 void Stone::eatWithUpdate(Data& data)
@@ -12,9 +12,9 @@ void Stone::eatWithUpdate(Data& data)
 	data.decStonesLeft();
 }
 
-void Stone::setSprite(const Resources& res, const sf::Vector2f position)
+void Stone::setSprite(const sf::Vector2f position)
 {
-	m_sprite.setTexture(res.getStone());
+	m_sprite.setTexture(Resources::instance().getStone());
 	m_sprite.setScale({ 0.1f, 0.1f });
 	m_sprite.setPosition(position);
 }

@@ -1,6 +1,8 @@
 #include "Data.h"
 #include <iomanip>
 #include <sstream>
+#include "Resources.h"
+#include <math.h> 
 
 const std::string TXT_LIVES = "Lives: ";
 const std::string TXT_STONES = "Stones Left: ";
@@ -57,10 +59,15 @@ Data::Data()
 	m_scoreTextIn.setPosition({ 6.8f * TXT_LONG_SPACE + 5 * TXT_SHORT_SPACE, 0 });
 	
 	m_timeTextOut.setString(TXT_TIME);
-	m_timeTextOut.setPosition({ 6.8f * TXT_LONG_SPACE + 6 * TXT_SHORT_SPACE, 0 });
+	m_timeTextOut.setPosition({ 6.8f * TXT_LONG_SPACE + 7 * TXT_SHORT_SPACE, 0 });
 
 	m_timeTextIn.setString("");
-	m_timeTextIn.setPosition({ 7.8f * TXT_LONG_SPACE + 6 * TXT_SHORT_SPACE, 0 });
+	m_timeTextIn.setPosition({ 7.8f * TXT_LONG_SPACE + 7 * TXT_SHORT_SPACE, 0 });
+
+	m_timeOut.setTexture(Resources::instance().getTimeOut());
+	m_timeOut.setPosition(sf::Vector2f{ WINDOW_WIDTH/6, 0 });
+	m_timeOut.setScale(0.1f, 0.1f);
+	m_timeOut.setColor({ 255, 255, 255, 40 });
 }
 
 void Data::draw(sf::RenderWindow& window)
@@ -71,10 +78,14 @@ void Data::draw(sf::RenderWindow& window)
 	m_diamondsTextIn.setString(std::to_string(m_diamonds_amount));
 	m_scoreTextIn.setString(std::to_string(m_score));
 
+	float timeLeft = getTimeLeft();
 	std::stringstream stream;
-	stream << std::fixed << std::setprecision(1) << m_time - m_levelClock.getElapsedTime().asSeconds();
+	stream << std::fixed << std::setprecision(1) << timeLeft;
 
 	m_timeTextIn.setString(stream.str());
+
+	if(timeLeft < 8 && (timeLeft - float(int(timeLeft))) > 0.4   )
+		window.draw(m_timeOut);
 
 	window.draw(m_livesTextOut);
 	window.draw(m_livesTextIn);
@@ -99,6 +110,7 @@ void Data::resetLevel()
 {
 	m_stonesLeft = m_allowedStones;
 	m_diamonds_amount = 0;
+	m_time = 0;
 	m_levelClock.restart();
 }
 
@@ -124,7 +136,7 @@ int Data::getLevel() const
 	return m_level;
 }
 
-int Data::getTimeLeft() const
+float Data::getTimeLeft() const
 {
 	return m_time - m_levelClock.getElapsedTime().asSeconds();
 }
@@ -142,14 +154,19 @@ void Data::setLives(int lives)
 	m_lives = lives;
 }
 
-void Data::setScore(int score)
+void Data::incScore(int score)
 {
-	m_score = score;
+	m_score += score;
 }
 
 void Data::decStonesLeft()
 {
 	m_stonesLeft--;
+}
+
+void Data::incStonesLeft(int num)
+{
+	m_stonesLeft += num;
 }
 
 void Data::setAllowedStones(int allowedStones)
@@ -162,12 +179,12 @@ void Data::incLevel()
 	m_level++;
 	//if advanced level add 200 to score.
 	if (m_level > 1)
-		setScore(m_score+200);
+		incScore(153);
 }
 
-void Data::setTime(int time)
+void Data::incTime(int time)
 {
-	m_time = time;
+	m_time += time;
 }
 
 void Data::incDiamondsAmount()

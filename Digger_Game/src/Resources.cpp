@@ -8,6 +8,11 @@ const std::string DIGGER_FRONT_IMAGE = "digger_front_image.png";
 const std::string DIAMOND_IMAGE = "diamond_image.png";
 const std::string WALL_IMAGE = "wall_brick_image.png";
 const std::string STONE_IMAGE = "stone_image.png";
+const std::string TIME_SAND_IMAGE = "time_sand.png";
+const std::string DOLAR_IMAGE = "dolar_image.png";
+//const std::string HEART_IMAGE = "heart.png";
+const std::string STONE_GIFT_IMAGE = "stone_gift.png";
+const std::string TIME_OUT_IMAGE = "time_out.png";
 
 Resources::Resources()
 {
@@ -36,6 +41,18 @@ Resources::Resources()
 
 	m_stone = sf::Texture();
 	m_stone.loadFromFile(STONE_IMAGE);
+	
+	m_timeSand = sf::Texture();
+	m_timeSand.loadFromFile(TIME_SAND_IMAGE);
+	
+	m_timeOut = sf::Texture();
+	m_timeOut.loadFromFile(TIME_OUT_IMAGE);
+	
+	m_dolar = sf::Texture();
+	m_dolar.loadFromFile(DOLAR_IMAGE);
+	
+	m_stoneGift = sf::Texture();
+	m_stoneGift.loadFromFile(STONE_GIFT_IMAGE);
 
 }
 
@@ -68,3 +85,16 @@ const sf::Texture& Resources::getWall()const
 
 const sf::Texture& Resources::getStone()const
 {return m_stone;}
+
+const sf::Texture& Resources::getTimeSand() const
+{return m_timeSand;}
+
+
+const sf::Texture& Resources::getTimeOut() const
+{return m_timeOut;}
+
+const sf::Texture& Resources::getDolar() const
+{return m_dolar;}
+
+const sf::Texture& Resources::getStoneGift() const
+{return m_stoneGift;}

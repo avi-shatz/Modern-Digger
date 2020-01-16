@@ -1,16 +1,20 @@
 #include "ScoreGift.h"
 
 
-ScoreGift::ScoreGift(const Resources& res, const sf::Vector2f position)
+ScoreGift::ScoreGift(const sf::Vector2f position)
 {
-	setSprite(res, position);
+	setSprite(position);
 }
 
 void ScoreGift::eatWithUpdate(Data& data)
 {
+	data.incScore(25);
 	eat();
 }
 
-void ScoreGift::setSprite(const Resources& res, const sf::Vector2f position)
+void ScoreGift::setSprite(const sf::Vector2f position)
 {
+	m_sprite.setTexture(Resources::instance().getDolar());
+	m_sprite.setScale({ 0.03f, 0.03f });
+	m_sprite.setPosition(position);
 }

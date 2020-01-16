@@ -5,9 +5,9 @@
 class Wall : public Object
 {
 public:
-	Wall(const Resources& res, const sf::Vector2f position);
+	Wall(const sf::Vector2f position);
 
 private:
-	void setSprite(const Resources& res, const sf::Vector2f position);
+	void setSprite(const sf::Vector2f position);
 
 };

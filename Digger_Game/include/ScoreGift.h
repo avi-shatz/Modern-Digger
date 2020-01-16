@@ -4,11 +4,11 @@
 class ScoreGift : public Gift
 {
 public:
-	ScoreGift(const Resources& res, const sf::Vector2f position);
+	ScoreGift(const sf::Vector2f position);
 
 	virtual void eatWithUpdate(Data& data) override;
 
 private:
-	void setSprite(const Resources& res, const sf::Vector2f position);
+	void setSprite(const sf::Vector2f position);
 
 };

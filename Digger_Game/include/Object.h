@@ -7,7 +7,7 @@
 class Object 
 {
 public:
-	//virtual ~Object() = 0;
+	virtual ~Object() = 0 {};
 	void draw(sf::RenderWindow& window);
 
 	//checks collision between two objects 

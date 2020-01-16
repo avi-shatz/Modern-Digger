@@ -14,15 +14,16 @@ public:
 	int getScore()const;
 	int getStonesLeft()const;
 	int getLevel()const;
-	int getTimeLeft()const;
+	float getTimeLeft()const;
 	int getDiamondsAmount()const;
 
 	//setters
 	void setLives(int lives);
-	void setScore(int score);
+	void incScore(int score);
 	void decStonesLeft();
+	void incStonesLeft(int num = 1);
 	void setAllowedStones(int allowedStones);
-	void setTime(int time);
+	void incTime(int time);
 	void incLevel();	
 	void incDiamondsAmount();
 	void decDiamondsAmount();
@@ -35,7 +36,7 @@ private:
 	int m_score = 0;
 	int m_stonesLeft = 0;
 	int m_allowedStones = 0;
-	int m_time = 0;
+	float m_time = 0;
 	int m_diamonds_amount = 0;
 
 	sf::Clock m_levelClock;
@@ -53,4 +54,6 @@ private:
 	sf::Text m_scoreTextOut;
 	sf::Text m_timeTextIn;
 	sf::Text m_timeTextOut;
+
+	sf::Sprite m_timeOut;
 };

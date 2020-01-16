@@ -16,6 +16,10 @@ public:
 	const sf::Texture& getDiamond()const;
 	const sf::Texture& getWall()const;
 	const sf::Texture& getStone()const;
+	const sf::Texture& getTimeSand()const;
+	const sf::Texture& getTimeOut()const;
+	const sf::Texture& getDolar()const;
+	const sf::Texture& getStoneGift()const;
 
 
 private:
@@ -29,5 +33,9 @@ private:
 	sf::Texture m_diamond;
 	sf::Texture m_wall;
 	sf::Texture m_stone;
+	sf::Texture m_timeSand;
+	sf::Texture m_timeOut;
+	sf::Texture m_dolar;
+	sf::Texture m_stoneGift;
 	
 };
