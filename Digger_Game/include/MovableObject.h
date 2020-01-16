@@ -7,7 +7,7 @@ class MovableObject : public Object
 {
 public:
 	MovableObject(const sf::Vector2f position);
-	//virtual ~MovableObject() = 0 {};
+	virtual ~MovableObject() = 0 {};
 
 	void resetPosition();
 

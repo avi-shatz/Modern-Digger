@@ -10,7 +10,7 @@ class Monster : public MovableObject
 {
 public:
 	Monster(const sf::Vector2f position);
-	//virtual ~Monster() = 0;
+	virtual ~Monster() = 0 {};
 
 	virtual void move(float deltaTime) = 0; // maby should  implement some shared logic
 

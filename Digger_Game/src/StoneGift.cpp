@@ -1,15 +1,19 @@
 #include "StoneGift.h"
 
-StoneGift::StoneGift(const Resources& res, const sf::Vector2f position)
+StoneGift::StoneGift(const sf::Vector2f position)
 {
-	setSprite(res, position);
+	setSprite(position);
 }
 
 void StoneGift::eatWithUpdate(Data& data)
 {
+	data.incStonesLeft(2);
 	eat();
 }
 
-void StoneGift::setSprite(const Resources& res, const sf::Vector2f position)
+void StoneGift::setSprite(const sf::Vector2f position)
 {
+	m_sprite.setTexture(Resources::instance().getStoneGift());
+	m_sprite.setScale({ 0.1f, 0.1f });
+	m_sprite.setPosition(position);
 }

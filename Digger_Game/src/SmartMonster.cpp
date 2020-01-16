@@ -1,13 +1,12 @@
 #include "SmartMonster.h"
 #include "EdibleObject.h"
-#include "Stone.h"
 #include "Controller.h"
 
-SmartMonster::SmartMonster(const Resources& res, const sf::Vector2f position)
+SmartMonster::SmartMonster(const sf::Vector2f position)
 	:Monster(position), m_chase_digger(true),
     m_search_width_first((bool)random_generator(0, 1))
 { 
-    setSprite(res, position);
+    setSprite(position);
 }
 
 void SmartMonster::move(float deltaTime)
@@ -98,9 +97,9 @@ void SmartMonster::move(float deltaTime)
     }
 }
 
-void SmartMonster::setSprite(const Resources& res, const sf::Vector2f position)
+void SmartMonster::setSprite(const sf::Vector2f position)
 {
-    m_sprite.setTexture(res.getSmartMonster());
+    m_sprite.setTexture(Resources::instance().getSmartMonster());
     m_sprite.setScale({ 0.07f, 0.07f });
     m_sprite.setPosition(position);
 }

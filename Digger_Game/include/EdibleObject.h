@@ -9,8 +9,7 @@ class EdibleObject : public Object
 {
 public:
 
-	//virtual ~EdibleObject() = 0 {}
-
+	virtual ~EdibleObject() = 0 {}
 	
 	bool is_eaten()const;
 	void eat();

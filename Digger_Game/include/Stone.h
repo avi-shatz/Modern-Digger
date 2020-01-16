@@ -4,11 +4,11 @@
 class Stone : public EdibleObject
 {
 public:
-	Stone(const Resources& res, const sf::Vector2f position);
+	Stone(const sf::Vector2f position);
 
 	virtual void eatWithUpdate(Data& data) override;
 
 private:
-	void setSprite(const Resources& res, const sf::Vector2f position);
+	void setSprite(const sf::Vector2f position);
 
 };

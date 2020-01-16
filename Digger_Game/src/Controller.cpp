@@ -9,9 +9,9 @@
 Controller::Controller()
 	:m_window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Digger Game"),
 	m_res(Resources::instance()), m_data(), m_ifs(FILE_PATH),
-	m_digger(m_res, {0,0}), m_levelTime()
+	m_digger({0,0}), m_levelTime()
 {
-	m_window.setFramerateLimit(90);
+	//m_window.setFramerateLimit(90);
 
 	if (m_ifs.bad()) {
 		std::cerr << "coudn't open Board.txt" << std::endl;
@@ -182,7 +182,6 @@ void Controller::draw()
 {
 	m_window.clear(MENU_BACKGROUND);
 
-	m_data.draw(m_window);
 	m_window.draw(m_boardRect);
 
 	for (const auto& edible : m_edibleVec)
@@ -195,6 +194,8 @@ void Controller::draw()
 		 monster->draw(m_window);
 
 	m_digger.draw(m_window);
+
+	m_data.draw(m_window);
 
 	m_window.display();
 }
@@ -253,7 +254,7 @@ bool Controller::readLevel()
 void Controller::initLevel()
 {
 	m_data.resetLevel();
-	m_data.setTime(m_levelTime);
+	m_data.incTime(m_levelTime);
 
 	m_edibleVec.clear();
 	m_monsterVec.clear();
@@ -285,23 +286,35 @@ void Controller::initLevel()
 				// chose between smart and stupid monsters
 				  
 				  if (monsterCnt % 2 == 0)
-					  m_monsterVec.push_back(std::make_unique<SmartMonster>(m_res, position));
+					  m_monsterVec.push_back(std::make_unique<SmartMonster>(position));
 				  else
-					  m_monsterVec.push_back(std::make_unique<StupidMonster>(m_res, position));
+					  m_monsterVec.push_back(std::make_unique<StupidMonster>(position));
 			    }
 			    break;
 
 			case STONE:
-				m_edibleVec.push_back(std::make_unique<Stone>(m_res, position));
+				m_edibleVec.push_back(std::make_unique<Stone>(position));
 				break;
 
 			case WALL:
-				m_wallVec.push_back(std::make_unique<Wall>(m_res, position));
+				m_wallVec.push_back(std::make_unique<Wall>(position));
 				break;
 
 			case DIAMOND:
-				m_edibleVec.push_back(std::make_unique<Diamond>(m_res, position));
+				m_edibleVec.push_back(std::make_unique<Diamond>(position));
 				m_data.incDiamondsAmount();
+				break;
+			
+			case GIFT:
+				int num = random_generator(0, 2);
+
+				if(num == 0)
+					m_edibleVec.push_back(std::make_unique<ScoreGift>(position));
+				if(num == 1)
+					m_edibleVec.push_back(std::make_unique<TimeGift>(position));
+				if(num == 2)
+					m_edibleVec.push_back(std::make_unique<StoneGift>(position));
+
 				break;
 			}
 		}

@@ -4,12 +4,12 @@
 class StupidMonster : public Monster
 {
 public:
-	StupidMonster(const Resources& res, const sf::Vector2f position);
+	StupidMonster(const sf::Vector2f position);
 
 	virtual void move(float deltaTime) override;
 
 private:
 
-   void setSprite(const Resources& res, const sf::Vector2f position);
+   void setSprite(const sf::Vector2f position);
 
 };
