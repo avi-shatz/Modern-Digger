@@ -12,6 +12,7 @@
                                      "EdibleObject.cpp"
                                      "Gift.cpp"
                                      "StoneGift.cpp"
+                                     "LivesGift.cpp"
                                      "TimeGift.cpp"
                                      "ScoreGift.cpp"
                                      "Stone.cpp"

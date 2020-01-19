@@ -18,7 +18,6 @@ public:
 	int getDiamondsAmount()const;
 
 	//setters
-	void setLives(int lives);
 	void incScore(int score);
 	void decStonesLeft();
 	void incStonesLeft(int num = 1);
@@ -27,7 +26,9 @@ public:
 	void incLevel();	
 	void incDiamondsAmount();
 	void decDiamondsAmount();
-	void decLives();
+	void decLives(int lives = 1);
+	void incLives(int lives = 1);
+	void restartClock();
 
 private:
 
@@ -54,6 +55,7 @@ private:
 	sf::Text m_scoreTextOut;
 	sf::Text m_timeTextIn;
 	sf::Text m_timeTextOut;
-
+	
+	sf::Sprite m_clockSprite;
 	sf::Sprite m_timeOut;
 };

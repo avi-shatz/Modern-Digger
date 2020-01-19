@@ -10,6 +10,7 @@
 #include "Diamond.h"
 #include "StoneGift.h"
 #include "TimeGift.h"
+#include "LivesGift.h"
 #include "ScoreGift.h"
 #include <memory>
 #include <fstream>

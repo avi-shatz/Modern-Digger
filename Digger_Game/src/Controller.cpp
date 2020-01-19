@@ -30,6 +30,7 @@ Controller& Controller::instance()
 
 void Controller::resetMovablePosition()
 {
+	m_data.restartClock();
 	m_digger.resetPosition();
 
 	for (auto& monster : m_monsterVec)
@@ -110,7 +111,7 @@ bool Controller::levelOn(bool& keepPlaying)
 		//if player finished exit 1 loop (go to next level)
 		return false; 
 
-	if (!m_data.getStonesLeft() || m_data.getTimeLeft() <= 0)
+	if (m_data.getStonesLeft() < 0 || m_data.getTimeLeft() <= 0)
 	{
 		initLevel();
 		m_data.decLives();
@@ -181,6 +182,12 @@ void Controller::processEvents(float deltaTime)
 void Controller::draw()
 {
 	m_window.clear(MENU_BACKGROUND);
+
+	sf::Sprite background(Resources::instance().getGameBackround());
+	background.setPosition(0, 0);
+	background.scale(1.1f, 1.1f);
+	background.setColor({ 255, 255, 255, 180 });
+	m_window.draw(background);
 
 	m_window.draw(m_boardRect);
 
@@ -306,14 +313,16 @@ void Controller::initLevel()
 				break;
 			
 			case GIFT:
-				int num = random_generator(0, 2);
+				int num = random_generator(1, 7);
 
-				if(num == 0)
+				if(num <= 2)
 					m_edibleVec.push_back(std::make_unique<ScoreGift>(position));
-				if(num == 1)
+				else if(num <= 4)
 					m_edibleVec.push_back(std::make_unique<TimeGift>(position));
-				if(num == 2)
+				else if(num <= 6)
 					m_edibleVec.push_back(std::make_unique<StoneGift>(position));
+				else if(num == 7)
+					m_edibleVec.push_back(std::make_unique<LivesGift>(position));
 
 				break;
 			}

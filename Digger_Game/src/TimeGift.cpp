@@ -15,7 +15,7 @@ void TimeGift::eatWithUpdate(Data& data)
 
 void TimeGift::setSprite(const sf::Vector2f position)
 {
-	m_sprite.setTexture(Resources::instance().getTimeSand());
-	m_sprite.setScale({ 0.18f, 0.1f });
+	m_sprite.setTexture(Resources::instance().getClock());
+	m_sprite.setScale({ 0.1f, 0.1f });
 	m_sprite.setPosition(position);
 }

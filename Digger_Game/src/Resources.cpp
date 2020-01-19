@@ -13,47 +13,45 @@ const std::string DOLAR_IMAGE = "dolar_image.png";
 //const std::string HEART_IMAGE = "heart.png";
 const std::string STONE_GIFT_IMAGE = "stone_gift.png";
 const std::string TIME_OUT_IMAGE = "time_out.png";
+const std::string GAME_BACKROUND = "game_background.jpg";
+const std::string CLOCK_IMAGE = "clock_image.png";
+const std::string HEART_IMAGE_1 = "heart_image1.png";
+const std::string HEART_IMAGE_2 = "heart_image2.png";
 
 Resources::Resources()
 {
 	//initialize all textures
 
-	m_stupidMonster = sf::Texture();
 	m_stupidMonster.loadFromFile(STUPID_MONSTER_IMAGE);
 	
-	m_smartMonster = sf::Texture();
 	m_smartMonster.loadFromFile(SMART_MONSTER_IMAGE);
 
-	m_diggerL = sf::Texture();
 	m_diggerL.loadFromFile(DIGGER_LEFT_IMAGE);
 	
-	m_diggerR = sf::Texture();
 	m_diggerR.loadFromFile(DIGGER_RIGHT_IMAGE);
 	
-	m_diggerF = sf::Texture();
 	m_diggerF.loadFromFile(DIGGER_FRONT_IMAGE);
 	
-	m_diamond = sf::Texture();
 	m_diamond.loadFromFile(DIAMOND_IMAGE);
 
-	m_wall = sf::Texture();
 	m_wall.loadFromFile(WALL_IMAGE);
 
-	m_stone = sf::Texture();
 	m_stone.loadFromFile(STONE_IMAGE);
 	
-	m_timeSand = sf::Texture();
 	m_timeSand.loadFromFile(TIME_SAND_IMAGE);
 	
-	m_timeOut = sf::Texture();
 	m_timeOut.loadFromFile(TIME_OUT_IMAGE);
 	
-	m_dolar = sf::Texture();
 	m_dolar.loadFromFile(DOLAR_IMAGE);
 	
-	m_stoneGift = sf::Texture();
 	m_stoneGift.loadFromFile(STONE_GIFT_IMAGE);
 
+	m_gameBackround.loadFromFile(GAME_BACKROUND);
+
+	m_clock.loadFromFile(CLOCK_IMAGE);
+
+	m_heart1.loadFromFile(HEART_IMAGE_1);
+	m_heart2.loadFromFile(HEART_IMAGE_2);
 }
 
 Resources& Resources::instance()
@@ -98,3 +96,15 @@ const sf::Texture& Resources::getDolar() const
 
 const sf::Texture& Resources::getStoneGift() const
 {return m_stoneGift;}
+
+const sf::Texture& Resources::getGameBackround() const
+{return m_gameBackround;}
+
+const sf::Texture& Resources::getClock() const
+{return m_clock;}
+
+const sf::Texture& Resources::getHeart1() const
+{return m_heart1;}
+
+const sf::Texture& Resources::getHeart2() const
+{return m_heart2;}

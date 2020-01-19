@@ -17,10 +17,10 @@ Data::Data()
 {
 	
 	m_font.loadFromFile(FONT_PATH);
-
+	
 	m_livesTextOut.setFont(m_font);
 	m_livesTextOut.setString(TXT_LIVES);
-	m_livesTextOut.setColor(TXT_COLOR_DARK);
+	m_livesTextOut.setColor(sf::Color::Yellow);
 	m_livesTextOut.setPosition({ 0 + TXT_SHORT_SPACE, 0 });
 
 	//make all fonts same.
@@ -58,11 +58,15 @@ Data::Data()
 	m_scoreTextIn.setString("");
 	m_scoreTextIn.setPosition({ 6.8f * TXT_LONG_SPACE + 5 * TXT_SHORT_SPACE, 0 });
 	
-	m_timeTextOut.setString(TXT_TIME);
-	m_timeTextOut.setPosition({ 6.8f * TXT_LONG_SPACE + 7 * TXT_SHORT_SPACE, 0 });
+	m_clockSprite.setTexture(Resources::instance().getClock());
+	m_clockSprite.setPosition({ 7.8f * TXT_LONG_SPACE + 7 * TXT_SHORT_SPACE, 0 });
+	m_clockSprite.scale(0.1f, 0.1f);
+
+	/*m_timeTextOut.setString(TXT_TIME);
+	m_timeTextOut.setPosition({ 6.8f * TXT_LONG_SPACE + 7 * TXT_SHORT_SPACE, 0 });*/
 
 	m_timeTextIn.setString("");
-	m_timeTextIn.setPosition({ 7.8f * TXT_LONG_SPACE + 7 * TXT_SHORT_SPACE, 0 });
+	m_timeTextIn.setPosition({ 7.8f * TXT_LONG_SPACE + 8 * TXT_SHORT_SPACE, 0 });
 
 	m_timeOut.setTexture(Resources::instance().getTimeOut());
 	m_timeOut.setPosition(sf::Vector2f{ WINDOW_WIDTH/6, 0 });
@@ -84,7 +88,7 @@ void Data::draw(sf::RenderWindow& window)
 
 	m_timeTextIn.setString(stream.str());
 
-	if(timeLeft < 8 && (timeLeft - float(int(timeLeft))) > 0.4   )
+	if(timeLeft < 10 && ((double)timeLeft - floor(timeLeft)) > 0.4   )
 		window.draw(m_timeOut);
 
 	window.draw(m_livesTextOut);
@@ -99,10 +103,12 @@ void Data::draw(sf::RenderWindow& window)
 	window.draw(m_diamondsTextOut);
 	window.draw(m_diamondsTextIn);
 	
+	
 	window.draw(m_scoreTextOut);
 	window.draw(m_scoreTextIn);
 	
-	window.draw(m_timeTextOut);
+	window.draw(m_clockSprite);
+	//window.draw(m_timeTextOut);
 	window.draw(m_timeTextIn);
 }
 
@@ -149,11 +155,6 @@ int Data::getDiamondsAmount() const
 
 //-------------  setters  ---------------------------------------
 
-void Data::setLives(int lives)
-{
-	m_lives = lives;
-}
-
 void Data::incScore(int score)
 {
 	m_score += score;
@@ -197,7 +198,17 @@ void Data::decDiamondsAmount()
 	m_diamonds_amount--;
 }
 
-void Data::decLives()
+void Data::decLives(int lives)
 {
-	m_lives--;
+	m_lives -= lives;
+}
+
+void Data::incLives(int lives)
+{
+	m_lives += lives;
+}
+
+void Data::restartClock()
+{
+	m_levelClock.restart();
 }
