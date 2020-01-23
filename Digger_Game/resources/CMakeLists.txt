@@ -20,3 +20,16 @@ configure_file ("game_background.jpg" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("clock_image.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("heart_image2.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("heart_image1.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("menu_image.jpg" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("menu_background.jpg" ${CMAKE_BINARY_DIR} COPYONLY)
+
+configure_file ("ImageBackGround.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("super.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("butterfly_.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Sign.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("musicloop.wav" ${CMAKE_BINARY_DIR}/resources COPYONLY)
+configure_file ("stats.txt" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("background_statistic.png" ${CMAKE_BINARY_DIR} COPYONLY)  
+configure_file ("goback.png" ${CMAKE_BINARY_DIR} COPYONLY)  
+
+

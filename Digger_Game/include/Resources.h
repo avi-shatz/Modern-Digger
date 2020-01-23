@@ -24,6 +24,8 @@ public:
 	const sf::Texture& getClock()const;
 	const sf::Texture& getHeart1()const;
 	const sf::Texture& getHeart2()const;
+	const sf::Texture& getMenu()const;
+	const sf::Texture& getMenuBackground()const;
 
 
 private:
@@ -45,5 +47,7 @@ private:
 	sf::Texture m_clock;
 	sf::Texture m_heart1;
 	sf::Texture m_heart2;
+	sf::Texture m_menu;
+	sf::Texture m_menuBackground;
 	
 };

@@ -8,6 +8,7 @@ public:
 
 	void draw(sf::RenderWindow& window);
 	void resetLevel();
+	void pauseOrPlayClock();
 
 	//getters
 	int getLives()const;
@@ -31,13 +32,17 @@ public:
 	void restartClock();
 
 private:
+	void initAllText();
+	
 
+	bool m_paused = false;
 	int m_lives = LIVES;
 	int m_level = 0;
 	int m_score = 0;
 	int m_stonesLeft = 0;
 	int m_allowedStones = 0;
 	float m_time = 0;
+	float m_runTime = 0;
 	int m_diamonds_amount = 0;
 
 	sf::Clock m_levelClock;

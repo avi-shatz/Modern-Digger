@@ -10,13 +10,14 @@ const std::string WALL_IMAGE = "wall_brick_image.png";
 const std::string STONE_IMAGE = "stone_image.png";
 const std::string TIME_SAND_IMAGE = "time_sand.png";
 const std::string DOLAR_IMAGE = "dolar_image.png";
-//const std::string HEART_IMAGE = "heart.png";
 const std::string STONE_GIFT_IMAGE = "stone_gift.png";
 const std::string TIME_OUT_IMAGE = "time_out.png";
 const std::string GAME_BACKROUND = "game_background.jpg";
 const std::string CLOCK_IMAGE = "clock_image.png";
 const std::string HEART_IMAGE_1 = "heart_image1.png";
 const std::string HEART_IMAGE_2 = "heart_image2.png";
+const std::string MENU_IMAGE = "menu_image.jpg";
+const std::string MENU_BACKGROUND_IMAGE = "menu_background.jpg";
 
 Resources::Resources()
 {
@@ -52,6 +53,9 @@ Resources::Resources()
 
 	m_heart1.loadFromFile(HEART_IMAGE_1);
 	m_heart2.loadFromFile(HEART_IMAGE_2);
+
+	m_menu.loadFromFile(MENU_IMAGE);
+	m_menuBackground.loadFromFile(MENU_BACKGROUND_IMAGE);
 }
 
 Resources& Resources::instance()
@@ -108,3 +112,11 @@ const sf::Texture& Resources::getHeart1() const
 
 const sf::Texture& Resources::getHeart2() const
 {return m_heart2;}
+
+const sf::Texture& Resources::getMenu() const
+{return m_menu;}
+
+const sf::Texture& Resources::getMenuBackground() const
+{return m_menuBackground;}
+
+

@@ -3,23 +3,22 @@
 #include "Controller.h"
 
 SmartMonster::SmartMonster(const sf::Vector2f position)
-	:Monster(position), m_chase_digger(true),
-    m_search_width_first((bool)random_generator(0, 1))
+	:Monster(position), m_chaseDigger(true),
+    m_searchWidthFirst((bool)random_generator(0, 1))
 { 
     setSprite(position);
 }
 
-void SmartMonster::move(float deltaTime)
+void SmartMonster::move(float deltaTime, Controller& controller)
 {
-    
     sf::Vector2f position = getPosition();
-    sf::Vector2f digger_position = Controller::instance().getDiggerPosition();
+    sf::Vector2f digger_position = controller.getDiggerPosition();
 
-    if (m_chase_digger &&
+    if (m_chaseDigger &&
         abs(digger_position.x - position.x) < 300 &&
         abs(digger_position.y - position.y) < 300)
     { 
-        if (m_search_width_first) 
+        if (m_searchWidthFirst) 
         {
             if (digger_position.x - position.x < 1)
                 m_direction = Dir::Left;
@@ -29,9 +28,9 @@ void SmartMonster::move(float deltaTime)
                 m_direction = Dir::Up;
             else
                 m_direction = Dir::Down;
-        }else
+        }
+        else
         {
-
             if (digger_position.y - position.y < 1)
                 m_direction = Dir::Up;
             else if (digger_position.y - position.y > 2)
@@ -41,56 +40,39 @@ void SmartMonster::move(float deltaTime)
             else
                 m_direction = Dir::Right;
         }
-
     }
 
     float pixMove = deltaTime * MONSTER_SPEED;
-    sf::Vector2f movement;
 
     while (true) {
-        switch (m_direction)
-        {
-
-        case Dir::Up:
-            movement = { 0, -pixMove };
-            break;
-
-        case  Dir::Down:
-            movement = { 0, pixMove };
-            break;
-
-        case  Dir::Right:
-            movement = { pixMove, 0 };
-            break;
-
-        case  Dir::Left:
-            movement = { -pixMove, 0 };
-            break;
-        }
         
         sf::Vector2f prevPosition = m_sprite.getPosition();
 
-        if (!m_chase_digger) 
+        if (!m_chaseDigger) 
         {
-            m_sprite.move(m_temp_move);
-            if (Controller::instance().handleMovement(*this))
+            Dir temp = m_direction;
+            m_direction = m_tempDir;
+            MovableObject::move(pixMove, controller);
+            if (controller.handleMovement(*this))
             {
-                m_chase_digger = true;
+                m_chaseDigger = true;
                 break;
             }
             else
+            {
                 m_sprite.setPosition(prevPosition);
+                m_direction = temp;
+            }
         }
 
-        m_sprite.move(movement);
-        if (!Controller::instance().handleMovement(*this))
+        MovableObject::move(pixMove, controller);
+        if (!controller.handleMovement(*this))
         {
-            m_chase_digger = !m_chase_digger;
-            if(!m_chase_digger)
-                m_temp_move = movement; // if cant chase save chase movement
+            m_chaseDigger = !m_chaseDigger;
+            if(!m_chaseDigger)
+                m_tempDir = m_direction; // if cant chase save chase direction
             m_sprite.setPosition(prevPosition);
-            auto rand = random_generator(1, 4);
-            m_direction = (Dir)rand;
+            m_direction = (Dir)random_generator(1, 4);
         }
         else
             break;

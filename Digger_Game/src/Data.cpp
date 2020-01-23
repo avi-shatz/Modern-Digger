@@ -17,71 +17,19 @@ Data::Data()
 {
 	
 	m_font.loadFromFile(FONT_PATH);
-	
-	m_livesTextOut.setFont(m_font);
-	m_livesTextOut.setString(TXT_LIVES);
-	m_livesTextOut.setColor(sf::Color::Yellow);
-	m_livesTextOut.setPosition({ 0 + TXT_SHORT_SPACE, 0 });
-
-	//make all fonts same.
-	m_timeTextIn = m_timeTextOut = m_scoreTextOut =
-		m_scoreTextIn = m_diamondsTextIn = m_diamondsTextOut =
-		m_levelTextIn = m_levelTextOut = m_stonesTextIn = 
-		m_stonesTextOut = m_livesTextIn = m_livesTextOut;
-		
-
-	//init rest of data text
-	m_livesTextIn.setString("");
-	m_livesTextIn.setPosition({TXT_LONG_SPACE + TXT_SHORT_SPACE, 0 });
-
-	m_stonesTextOut.setString(TXT_STONES);
-	m_stonesTextOut.setPosition({ TXT_LONG_SPACE + 2 * TXT_SHORT_SPACE, 0 });
-
-	m_stonesTextIn.setString("");
-	m_stonesTextIn.setPosition({ 3 * TXT_LONG_SPACE + 2 * TXT_SHORT_SPACE, 0 });
-
-	m_levelTextOut.setString(TXT_LEVEL);
-	m_levelTextOut.setPosition({ 3 * TXT_LONG_SPACE + 3 * TXT_SHORT_SPACE, 0 });
-
-	m_levelTextIn.setString("");
-	m_levelTextIn.setPosition({ 4 * TXT_LONG_SPACE + 3* TXT_SHORT_SPACE, 0 });
-
-	m_diamondsTextOut.setString(TXT_DIAMONDS);
-	m_diamondsTextOut.setPosition({ 4 * TXT_LONG_SPACE + 4 * TXT_SHORT_SPACE, 0 });
-
-	m_diamondsTextIn.setString("");
-	m_diamondsTextIn.setPosition({ 5.8f * TXT_LONG_SPACE + 4 * TXT_SHORT_SPACE, 0 });
-
-	m_scoreTextOut.setString(TXT_SCORE);
-	m_scoreTextOut.setPosition({ 5.8f * TXT_LONG_SPACE + 5 * TXT_SHORT_SPACE, 0 });
-
-	m_scoreTextIn.setString("");
-	m_scoreTextIn.setPosition({ 6.8f * TXT_LONG_SPACE + 5 * TXT_SHORT_SPACE, 0 });
-	
-	m_clockSprite.setTexture(Resources::instance().getClock());
-	m_clockSprite.setPosition({ 7.8f * TXT_LONG_SPACE + 7 * TXT_SHORT_SPACE, 0 });
-	m_clockSprite.scale(0.1f, 0.1f);
-
-	/*m_timeTextOut.setString(TXT_TIME);
-	m_timeTextOut.setPosition({ 6.8f * TXT_LONG_SPACE + 7 * TXT_SHORT_SPACE, 0 });*/
-
-	m_timeTextIn.setString("");
-	m_timeTextIn.setPosition({ 7.8f * TXT_LONG_SPACE + 8 * TXT_SHORT_SPACE, 0 });
-
-	m_timeOut.setTexture(Resources::instance().getTimeOut());
-	m_timeOut.setPosition(sf::Vector2f{ WINDOW_WIDTH/6, 0 });
-	m_timeOut.setScale(0.1f, 0.1f);
-	m_timeOut.setColor({ 255, 255, 255, 40 });
+	initAllText();
 }
 
 void Data::draw(sf::RenderWindow& window)
 {
+	//update all strings
 	m_livesTextIn.setString(std::to_string(m_lives));
 	m_stonesTextIn.setString(std::to_string(m_stonesLeft));
 	m_levelTextIn.setString(std::to_string(m_level));
 	m_diamondsTextIn.setString(std::to_string(m_diamonds_amount));
 	m_scoreTextIn.setString(std::to_string(m_score));
 
+	//update time
 	float timeLeft = getTimeLeft();
 	std::stringstream stream;
 	stream << std::fixed << std::setprecision(1) << timeLeft;
@@ -117,7 +65,23 @@ void Data::resetLevel()
 	m_stonesLeft = m_allowedStones;
 	m_diamonds_amount = 0;
 	m_time = 0;
+	m_runTime = 0;
 	m_levelClock.restart();
+}
+
+
+void Data::pauseOrPlayClock()
+{
+	if (m_paused)
+	{
+		m_levelClock.restart();
+		m_paused = false;
+	}
+	else
+	{
+		m_runTime += m_levelClock.restart().asSeconds();
+		m_paused = true;
+	}
 }
 
 //-------------  getters  ---------------------------------------
@@ -144,7 +108,7 @@ int Data::getLevel() const
 
 float Data::getTimeLeft() const
 {
-	return m_time - m_levelClock.getElapsedTime().asSeconds();
+	return m_time - (m_levelClock.getElapsedTime().asSeconds() + m_runTime);
 }
 
 int Data::getDiamondsAmount() const
@@ -210,5 +174,65 @@ void Data::incLives(int lives)
 
 void Data::restartClock()
 {
+	m_runTime = 0;
 	m_levelClock.restart();
+}
+
+void Data::initAllText()
+{
+	
+	m_livesTextOut.setFont(m_font);
+	m_livesTextOut.setString(TXT_LIVES);
+	m_livesTextOut.setFillColor(sf::Color::Yellow);
+	m_livesTextOut.setPosition({ 0 + TXT_SHORT_SPACE, 0 });
+
+	//make all fonts same.
+	m_timeTextIn = m_timeTextOut = m_scoreTextOut =
+		m_scoreTextIn = m_diamondsTextIn = m_diamondsTextOut =
+		m_levelTextIn = m_levelTextOut = m_stonesTextIn =
+		m_stonesTextOut = m_livesTextIn = m_livesTextOut;
+
+
+	//init rest of data text
+	m_livesTextIn.setString("");
+	m_livesTextIn.setPosition({ TXT_LONG_SPACE + TXT_SHORT_SPACE, 0 });
+
+	m_stonesTextOut.setString(TXT_STONES);
+	m_stonesTextOut.setPosition({ TXT_LONG_SPACE + 2 * TXT_SHORT_SPACE, 0 });
+
+	m_stonesTextIn.setString("");
+	m_stonesTextIn.setPosition({ 3 * TXT_LONG_SPACE + 2 * TXT_SHORT_SPACE, 0 });
+
+	m_levelTextOut.setString(TXT_LEVEL);
+	m_levelTextOut.setPosition({ 3 * TXT_LONG_SPACE + 3 * TXT_SHORT_SPACE, 0 });
+
+	m_levelTextIn.setString("");
+	m_levelTextIn.setPosition({ 4 * TXT_LONG_SPACE + 3 * TXT_SHORT_SPACE, 0 });
+
+	m_diamondsTextOut.setString(TXT_DIAMONDS);
+	m_diamondsTextOut.setPosition({ 4 * TXT_LONG_SPACE + 4 * TXT_SHORT_SPACE, 0 });
+
+	m_diamondsTextIn.setString("");
+	m_diamondsTextIn.setPosition({ 5.8f * TXT_LONG_SPACE + 4 * TXT_SHORT_SPACE, 0 });
+
+	m_scoreTextOut.setString(TXT_SCORE);
+	m_scoreTextOut.setPosition({ 5.8f * TXT_LONG_SPACE + 5 * TXT_SHORT_SPACE, 0 });
+
+	m_scoreTextIn.setString("");
+	m_scoreTextIn.setPosition({ 6.8f * TXT_LONG_SPACE + 5 * TXT_SHORT_SPACE, 0 });
+
+	m_clockSprite.setTexture(Resources::instance().getClock());
+	m_clockSprite.setPosition({ 7.8f * TXT_LONG_SPACE + 7 * TXT_SHORT_SPACE, 0 });
+	m_clockSprite.scale(0.1f, 0.1f);
+
+	/*m_timeTextOut.setString(TXT_TIME);
+	m_timeTextOut.setPosition({ 6.8f * TXT_LONG_SPACE + 7 * TXT_SHORT_SPACE, 0 });*/
+
+	m_timeTextIn.setString("");
+	m_timeTextIn.setPosition({ 7.8f * TXT_LONG_SPACE + 8 * TXT_SHORT_SPACE, 0 });
+
+	m_timeOut.setTexture(Resources::instance().getTimeOut());
+	m_timeOut.setPosition(sf::Vector2f{ float(WINDOW_WIDTH) / 6, 0 });
+	m_timeOut.setScale(0.1f, 0.1f);
+	m_timeOut.setColor({ 255, 255, 255, 40 });
 }

@@ -8,14 +8,40 @@ Digger::Digger(const sf::Vector2f position)
 }
 
 	
-void Digger::move(sf::Vector2f movement)
+void Digger::move(float deltaTime, Controller& controller)
 {
-	sf::Vector2f prevPosition = m_sprite.getPosition();
-	m_sprite.move(movement * DIGGER_SPEED);
-	changeSpriteDirection(movement);
+	bool move = true;
 
-	if (!Controller::instance().handleMovement(*this))
-		m_sprite.setPosition(prevPosition); 
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	{
+		m_direction = Dir::Up;
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	{
+		m_direction = Dir::Down;
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	{
+		m_direction = Dir::Right;
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	{
+		m_direction = Dir::Left;
+	}
+	else
+	{
+		move = false;
+	}
+
+	if (move)
+	{
+		sf::Vector2f prevPosition = m_sprite.getPosition();
+		MovableObject::move(deltaTime * DIGGER_SPEED, controller);
+		changeSpriteDirection();
+
+		if (!controller.handleMovement(*this))
+			m_sprite.setPosition(prevPosition);
+	}
 }
 
 void Digger::setStartPosition(const sf::Vector2f position)
@@ -35,29 +61,24 @@ void Digger::setSprite(const sf::Vector2f position)
 	m_spriteL.setTexture(Resources::instance().getDiggerL());
 
 	m_spriteF.setTexture(Resources::instance().getDiggerF());
-	m_spriteF.setScale({ 0.08f, 0.08 });
+	m_spriteF.setScale({ 0.08f, 0.08f });
 }
 
-void Digger::changeSpriteDirection(sf::Vector2f movement)
+void Digger::changeSpriteDirection()
 {
-	if (movement.y == 0) 
-	{
-		if (movement.x > 0 && m_sprite.getTexture() != &Resources::instance().getDiggerR())
+		if (m_direction == Dir::Right &&
+			m_sprite.getTexture() != m_spriteR.getTexture())
 		{
 			m_sprite.setTexture(*m_spriteR.getTexture());
-			//m_sprite.setScale(m_spriteR.getScale());
 		}
-		else if (movement.x < 0 && m_sprite.getTexture() != &Resources::instance().getDiggerL())
+		else if (m_direction == Dir::Left &&
+			m_sprite.getTexture() != m_spriteL.getTexture())
 		{
 			m_sprite.setTexture(*m_spriteL.getTexture());
-			//m_sprite.setScale(m_spriteL.getScale());
 		}
-	}
-	else if(movement.y != 0)
-		if (m_sprite.getTexture() != &Resources::instance().getDiggerF())
+		else if ((m_direction == Dir::Up || m_direction == Dir::Down)
+			&& m_sprite.getTexture() != m_spriteF.getTexture())
 		{
 			m_sprite.setTexture(*m_spriteF.getTexture());
-			//m_sprite.setScale(m_spriteF.getScale());
 		}
-
 }

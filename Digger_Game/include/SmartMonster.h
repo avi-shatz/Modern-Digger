@@ -7,13 +7,15 @@ public:
 	SmartMonster (const sf::Vector2f position);
 
 
-	virtual void move(float deltaTime) override;
+	virtual void move(float deltaTime, Controller& controller) override;
 
 private:
 	void setSprite(const sf::Vector2f position);
 
-	bool m_chase_digger; // for passing on walls
-	const bool m_search_width_first; // for search direction priority
-	sf::Vector2f m_temp_move;
+	bool m_chaseDigger; // for passing on walls
+	const bool m_searchWidthFirst; // for search direction priority
+
+	Dir m_tempDir; // holds persu attempt,
+								//to keep running after digger
 };
 

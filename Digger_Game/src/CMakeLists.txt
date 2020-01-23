@@ -13,6 +13,8 @@
                                      "Gift.cpp"
                                      "StoneGift.cpp"
                                      "LivesGift.cpp"
+                                     "Statistic.cpp"
+                                     "Menu.cpp"
                                      "TimeGift.cpp"
                                      "ScoreGift.cpp"
                                      "Stone.cpp"

@@ -8,37 +8,17 @@
 
 Controller::Controller()
 	:m_window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Digger Game"),
-	m_res(Resources::instance()), m_data(), m_ifs(FILE_PATH),
-	m_digger({0,0}), m_levelTime()
+	 m_data(), m_fileLevel(FILE_PATH), m_digger({0,0}), m_levelTime()
 {
 	//m_window.setFramerateLimit(90);
 
-	if (m_ifs.bad()) {
+	if (m_fileLevel.bad()) {
 		std::cerr << "coudn't open Board.txt" << std::endl;
 		exit(EXIT_FAILURE);
 	}
 }
-
-//----- returns controller instance -------
-Controller& Controller::instance()
-{
-	static Controller instance;
-	return instance;
-}
   
-//------  its controls the running of the game  ---------
-
-void Controller::resetMovablePosition()
-{
-	m_data.restartClock();
-	m_digger.resetPosition();
-
-	for (auto& monster : m_monsterVec)
-	{
-		monster->resetPosition();
-	}
-}
-
+//------  run game loop ---------
 void Controller::run()
 {
 	bool win = false;
@@ -46,7 +26,7 @@ void Controller::run()
 
 	while (keepPlaying)
 	{
-		if (!readLevel())  {
+		if (!readLevel()) {
 			win = true;
 			break;
 		}
@@ -58,24 +38,43 @@ void Controller::run()
 			draw();
 
 			float deltaTime = clock.restart().asSeconds();
-		
+
 			for (auto& monster : m_monsterVec)
 			{
-				monster->move(deltaTime);
+				monster->move(deltaTime, *this);
 			}
 
 			//handel user input and calls digger.move() accordingly
-			processEvents(deltaTime);
+			if (!processEvents(deltaTime))
+			{
+				m_window.close();
+				return;
+			}
+			clock.restart();
 			handlePlayerDeath();
 		}
 	}
 
 	m_window.close();
 
-	if(win)
+	if (win)
 		endGameAnnouncement(WIN_MASSAGE);
 	else
 		endGameAnnouncement(LOSE_MASSAGE);
+}
+
+
+//------  its controls the running of the game  ---------
+
+void Controller::resetMovablePosition()
+{
+	m_data.restartClock();
+	m_digger.resetPosition();
+
+	for (auto& monster : m_monsterVec)
+	{
+		monster->resetPosition();
+	}
 }
 
 sf::Vector2f Controller::getDiggerPosition()
@@ -100,13 +99,6 @@ void Controller::handlePlayerDeath()
 
 bool Controller::levelOn(bool& keepPlaying)
 {
-	if (!m_data.getLives())
-	{
-		//if player loose exit 2 loops (go back to menu)
-		keepPlaying = false;
-		return false;
-	}
-
 	if (!m_data.getDiamondsAmount())
 		//if player finished exit 1 loop (go to next level)
 		return false; 
@@ -117,13 +109,77 @@ bool Controller::levelOn(bool& keepPlaying)
 		m_data.decLives();
 	}
 
+	if (!m_data.getLives())
+	{
+		//if player loose exit 2 loops
+		keepPlaying = false;
+		return false;
+	}
 
+	return true;
+}
+
+
+bool Controller::pauseGame()
+{
+
+	m_data.pauseOrPlayClock();
+	sf::Sprite backSprite{Resources::instance().getMenuBackground()};
+	backSprite.setColor({ 255,255,255,150 });
+	backSprite.setPosition(0, DATA_HEIGHT);
+	backSprite.scale(10.f, 3.f);
+
+	sf::Sprite menuButton{Resources::instance().getMenu()};
+	menuButton.setPosition(300, DATA_HEIGHT+300);
+	menuButton.scale(1.f, 1.f);
+
+	drawWithoutDisplay();
+	m_window.draw(backSprite);
+	m_window.draw(menuButton);
+	m_window.display();
+
+	while (m_window.isOpen())
+	{
+		// getting user input from keyboard.
+		if (auto event = sf::Event{}; m_window.waitEvent(event))
+		{
+			switch (event.type)
+			{
+			case sf::Event::Closed:
+				return false;
+
+			case sf::Event::KeyReleased:
+				switch (event.key.code)
+				{
+				case sf::Keyboard::Escape:
+					return false;
+
+				case sf::Keyboard::Space:
+					m_data.pauseOrPlayClock();
+					return true;
+				}
+
+			case sf::Event::MouseButtonReleased:
+			{ //scope made for local variable (location)
+
+				auto position = m_window.mapPixelToCoords(
+					{ event.mouseButton.x, event.mouseButton.y });
+
+				//if user pressed on the menu button exit to menu.
+				if (menuButton.getGlobalBounds().contains(position))
+					return false;
+			}
+			break;
+
+			}
+		}
+	}
 	return true;
 }
 
 //----- reads events from the Keyboard  -------
 
-void Controller::processEvents(float deltaTime)
+bool Controller::processEvents(float deltaTime)
 {
 	sf::Event event;
 	while (m_window.pollEvent(event))
@@ -131,55 +187,37 @@ void Controller::processEvents(float deltaTime)
 		switch (event.type)
 		{
 		case sf::Event::Closed:
-			m_window.close();
-			exit(EXIT_SUCCESS);
+			return false;
 
+		case sf::Event::KeyReleased:
+			switch (event.key.code)
+			{
+			case sf::Keyboard::Escape:
+				return false;
+			case sf::Keyboard::Space:
+				if(!pauseGame())
+					return false;
+			}
 		}
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-		{
-			m_window.close();
-			exit(EXIT_SUCCESS);
-		}
 	}
 
+	m_digger.move(deltaTime, *this);
 
-	sf::Vector2f movement;
-	bool move = true;
+	std::experimental::erase_if(m_edibleVec, [](const auto& edible)
+		{ return edible->is_eaten(); });
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-	{
-		movement = { 0, -deltaTime };
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-	{
-		movement = { 0, deltaTime };
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-	{
-		movement = { deltaTime, 0 };
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-	{
-		movement = { -deltaTime, 0 };
-	}
-	else
-	{
-		move = false;
-	}
-
-	if (move)
-	{
-		m_digger.move(movement);
-
-		std::experimental::erase_if(m_edibleVec, [](const auto& edible)
-			{ return edible->is_eaten(); });
-	}
+	return true;
 }
 
 //------   display every object on window  ------
 
 void Controller::draw()
+{
+	drawWithoutDisplay();
+	m_window.display();
+}
+
+void Controller::drawWithoutDisplay()
 {
 	m_window.clear(MENU_BACKGROUND);
 
@@ -192,19 +230,17 @@ void Controller::draw()
 	m_window.draw(m_boardRect);
 
 	for (const auto& edible : m_edibleVec)
-		 edible->draw(m_window);
-	
+		edible->draw(m_window);
+
 	for (const auto& wall : m_wallVec)
-		 wall->draw(m_window);
+		wall->draw(m_window);
 
 	for (const auto& monster : m_monsterVec)
-		 monster->draw(m_window);
+		monster->draw(m_window);
 
 	m_digger.draw(m_window);
 
 	m_data.draw(m_window);
-
-	m_window.display();
 }
 
 //------ reads the next level if it does exist  ------
@@ -214,7 +250,7 @@ bool Controller::readLevel()
 	std::string line;
 
 	// if we reached the end of file finish the game.
-	if (!std::getline(m_ifs, line)) {
+	if (!std::getline(m_fileLevel, line)) {
 		return false;
 	}
 
@@ -239,13 +275,13 @@ bool Controller::readLevel()
 	// reading one level from file
 	for (int i = 0; i < m_rows; i++) 
     {
-		std::getline(m_ifs, line);
-		add_spaces_to_string(line);
+		std::getline(m_fileLevel, line);
+		addSpacesToString(line);
 		m_charBoard.push_back(line);
 	}
 
 	//getting the empty line before next level
-	std::getline(m_ifs, line);
+	std::getline(m_fileLevel, line);
 
 	m_data.incLevel();
 
@@ -313,7 +349,7 @@ void Controller::initLevel()
 				break;
 			
 			case GIFT:
-				int num = random_generator(1, 7);
+				auto num = random_generator(1, 7);
 
 				if(num <= 2)
 					m_edibleVec.push_back(std::make_unique<ScoreGift>(position));
@@ -333,11 +369,12 @@ void Controller::initLevel()
 
 //-- adding spaces to string, to match string size with board size ---------
 
-void Controller::add_spaces_to_string(std::string& line)
+void Controller::addSpacesToString(std::string& line)
 {
 	while (line.size() < m_columns)
 		line += SPACE;
 }
+
 
 bool Controller::handleMovement(const Digger& obj)
 {
@@ -400,7 +437,7 @@ bool Controller::validMovement(const Object& obj)
 	return true;
 }
 
-void endGameAnnouncement(std::string imaje)
+void Controller::endGameAnnouncement(std::string imaje)
 {
 	auto window = sf::RenderWindow(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "winner");
 

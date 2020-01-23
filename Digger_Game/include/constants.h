@@ -22,8 +22,8 @@ const std::string FILE_PATH = "Board.txt";
 //size
 const int MAX_ROWS = 6;
 const int MAX_COLUMMS = 15;
-const int WINDOW_WIDTH = 1600;
-const int WINDOW_HEIGHT = 1050;
+const int WINDOW_WIDTH = sf::VideoMode::getDesktopMode().width + 18;
+const int WINDOW_HEIGHT = sf::VideoMode::getDesktopMode().height;
 const float OBJECT_WIDTH = 80;
 const float OBJECT_HEIGHT = 80;
 const int DATA_HEIGHT = 50;

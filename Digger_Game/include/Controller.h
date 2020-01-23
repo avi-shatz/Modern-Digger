@@ -18,33 +18,32 @@
 
 class Controller {
 public:
-	//Controller(Controller&) = delete; //delete copy constractor
-	static Controller& instance();  // returns controller instance 
+	Controller();
 
 	void run();
 
-	void resetMovablePosition();
 	bool handleMovement(const Digger& obj);
 	bool handleMovement(const Monster& obj);
 	bool validMovement(const Object& obj);
 	sf::Vector2f getDiggerPosition();
 
 private:
-	Controller();
-	//Controller m_instance;
-
+	void resetMovablePosition();
 	void handlePlayerDeath();
 	bool levelOn(bool& keepPlaying);
 	void draw();
+	void drawWithoutDisplay();
 	bool readLevel();
 	void initLevel();
-	void processEvents(float deltaTime);
-	void add_spaces_to_string(std::string& line);
+	bool processEvents(float deltaTime);
+	void addSpacesToString(std::string& line);
+
+	bool pauseGame();
+	void endGameAnnouncement(std::string imaje);
 	sf::RenderWindow m_window;
 
-	Resources m_res; // holds all textures
 	Data m_data; // holds game data that displays on top of window
-	std::fstream m_ifs; // holds the file with all levels
+	std::fstream m_fileLevel; // holds the file with all levels
 
 	std::vector<std::string> m_charBoard;  // holds one level in a char form 
 	sf::RectangleShape m_boardRect; // game graphic borders
@@ -55,11 +54,10 @@ private:
 	std::vector<std::unique_ptr <EdibleObject>> m_edibleVec;
 	std::vector<std::unique_ptr <Wall>> m_wallVec;
 	
-	int m_levelTime;
-
 	// level board size
 	int m_rows = 0;
 	int m_columns = 0;
+
+	int m_levelTime; //holds initial time for the current level
 };
 
-void endGameAnnouncement(std::string imaje);

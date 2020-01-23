@@ -1,6 +1,6 @@
-#include <Controller.h>
+#include <Menu.h>
 
 int main()
 {
-    Controller::instance().run();
+    Menu().Run();
 }
