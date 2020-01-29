@@ -20,20 +20,19 @@ public:
 	
 
 private:	
-	// its draw the all images of the Background
+	// draw the all images of the Background
 	void draw();
-	// its create the image of the Background
-	void CreateBackground();
-	// its create the message of the Background
+	// create the message of the Background
 	void CreateMessage();
-	// its create the digger image of the Background
+	// create the digger image of the Background
 	void CreateDigger();
-	// its create the signs image of the Background
+	// create the signs image of the Background
 	void CreateSign();
-	sf::Texture& TextureSign(sf::Texture& texture);
-	//
+	
 	void CreateButterfly();
 		
+	void updateBigButton(sf::Vector2f position);
+	void updateButton(sf::Sprite* button);
 
 	sf::RenderWindow m_window;
 	// for the images in the Background
@@ -44,13 +43,16 @@ private:
 	sf::Texture m_Textbutterfly;
 	sf::Sprite m_SpriteButterfly;
 
-	// for the Signs in the Background
-	sf::Texture m_TextStart;
-	sf::Sprite m_SpriteStart;
-	sf::Texture m_TextClose;
-	sf::Sprite m_SpriteClose;
+	// for the  in the Background
+	sf::Texture m_TextStart;	
+	sf::Texture m_TextClose;	
 	sf::Texture m_TextStatistic;
+
+	sf::Sprite m_SpriteStart;
+	sf::Sprite m_SpriteClose;
 	sf::Sprite m_SpriteStatistic;
+
+	sf::Sprite* m_bigButton;
 
 	// for the messages in the Background
 	sf::Text m_Startmessage;

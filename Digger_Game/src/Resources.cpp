@@ -16,7 +16,7 @@ const std::string GAME_BACKROUND = "game_background.jpg";
 const std::string CLOCK_IMAGE = "clock_image.png";
 const std::string HEART_IMAGE_1 = "heart_image1.png";
 const std::string HEART_IMAGE_2 = "heart_image2.png";
-const std::string MENU_IMAGE = "menu_image.jpg";
+const std::string MENU_BUTTON_IMAGE = "Sign.png";
 const std::string MENU_BACKGROUND_IMAGE = "menu_background.jpg";
 
 Resources::Resources()
@@ -54,8 +54,11 @@ Resources::Resources()
 	m_heart1.loadFromFile(HEART_IMAGE_1);
 	m_heart2.loadFromFile(HEART_IMAGE_2);
 
-	m_menu.loadFromFile(MENU_IMAGE);
-	m_menuBackground.loadFromFile(MENU_BACKGROUND_IMAGE);
+	m_menuButton.loadFromFile(MENU_BUTTON_IMAGE);
+	m_pauseBackground.loadFromFile(MENU_BACKGROUND_IMAGE);
+
+	m_menuBackground.loadFromFile("ImageBackGround.png");
+
 }
 
 Resources& Resources::instance()
@@ -113,8 +116,8 @@ const sf::Texture& Resources::getHeart1() const
 const sf::Texture& Resources::getHeart2() const
 {return m_heart2;}
 
-const sf::Texture& Resources::getMenu() const
-{return m_menu;}
+const sf::Texture& Resources::getMenuButton() const
+{return m_menuButton;}
 
 const sf::Texture& Resources::getMenuBackground() const
 {return m_menuBackground;}

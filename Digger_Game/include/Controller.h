@@ -16,6 +16,9 @@
 #include <fstream>
 #include <iostream>
 
+const std::string WIN_MASSAGE = "you_win_colorful.png";
+const std::string LOSE_MASSAGE = "game_over.png";
+
 class Controller {
 public:
 	Controller();
@@ -24,10 +27,10 @@ public:
 
 	bool handleMovement(const Digger& obj);
 	bool handleMovement(const Monster& obj);
-	bool validMovement(const Object& obj);
 	sf::Vector2f getDiggerPosition();
 
 private:
+	bool validMovement(const Object& obj);
 	void resetMovablePosition();
 	void handlePlayerDeath();
 	bool levelOn(bool& keepPlaying);
@@ -40,6 +43,10 @@ private:
 
 	bool pauseGame();
 	void endGameAnnouncement(std::string imaje);
+	void updateStats();
+
+// ------- members -----------
+
 	sf::RenderWindow m_window;
 
 	Data m_data; // holds game data that displays on top of window

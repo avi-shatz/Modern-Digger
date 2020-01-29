@@ -7,14 +7,14 @@
 
 const int LIVES = 3;
 
+const int STATS_ARRAY = 5;
+
 
 const std::string WINDOW_TITLE = "Digger Editor";
-const std::string WIN_MASSAGE = "you_win_colorful.png";
-const std::string LOSE_MASSAGE = "game_over.png";
 const std::string FONT_PATH = "C:/Windows/Fonts/ahronbd.ttf";
+const std::string FILE_STATISTIC = "stats.txt";
 
 //data
-
 
 const std::string FILE_PATH = "Board.txt";
 //const char FILE_PATH_CHAR_ARRAY[] = "board.txt";
@@ -26,7 +26,7 @@ const int WINDOW_WIDTH = sf::VideoMode::getDesktopMode().width + 18;
 const int WINDOW_HEIGHT = sf::VideoMode::getDesktopMode().height;
 const float OBJECT_WIDTH = 80;
 const float OBJECT_HEIGHT = 80;
-const int DATA_HEIGHT = 50;
+const int DATA_HEIGHT = 60;
 //const float RECTANGLE_SIZE = 130;
 //const float BUTTON_SIZE = 110;
 //const float BUTTON_SPACE = 30;

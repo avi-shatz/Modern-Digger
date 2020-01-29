@@ -60,7 +60,7 @@ void Statistic::readFileStatistic()
     std::ifstream ifs;
     std::string line;
 
-    ifs.open("stats.txt");
+    ifs.open(FILE_STATISTIC);
     if (!ifs.is_open()) {
         std::cout << "error file is not opne!!";
     }

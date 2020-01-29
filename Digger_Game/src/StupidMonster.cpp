@@ -34,6 +34,6 @@ void StupidMonster::move(float deltaTime, Controller& controller)
 void StupidMonster::setSprite(const sf::Vector2f position)
 {
     m_sprite.setTexture(Resources::instance().getStupidMonster());
-    m_sprite.setScale({ 0.05f, 0.05f });
+    m_sprite.setScale({ 0.03f, 0.03f });
     m_sprite.setPosition(position);
 }

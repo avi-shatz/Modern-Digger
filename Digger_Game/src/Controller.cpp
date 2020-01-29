@@ -8,7 +8,7 @@
 
 Controller::Controller()
 	:m_window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Digger Game"),
-	 m_data(), m_fileLevel(FILE_PATH), m_digger({0,0}), m_levelTime()
+	 m_data(), m_fileLevel(FILE_PATH), m_digger({0,0}), m_levelTime(0)
 {
 	//m_window.setFramerateLimit(90);
 
@@ -61,6 +61,8 @@ void Controller::run()
 		endGameAnnouncement(WIN_MASSAGE);
 	else
 		endGameAnnouncement(LOSE_MASSAGE);
+
+	updateStats();
 }
 
 
@@ -124,18 +126,27 @@ bool Controller::pauseGame()
 {
 
 	m_data.pauseOrPlayClock();
-	sf::Sprite backSprite{Resources::instance().getMenuBackground()};
-	backSprite.setColor({ 255,255,255,150 });
-	backSprite.setPosition(0, DATA_HEIGHT);
-	backSprite.scale(10.f, 3.f);
+	sf::Sprite background(Resources::instance().getGameBackround());
+	background.setPosition(0, 0);
+	background.scale(1.1f, 1.1f);
+	background.setColor({ 255, 255, 255, 70 });
 
-	sf::Sprite menuButton{Resources::instance().getMenu()};
-	menuButton.setPosition(300, DATA_HEIGHT+300);
-	menuButton.scale(1.f, 1.f);
+	sf::Sprite menuButton{Resources::instance().getMenuButton()};
+	menuButton.setPosition(200, WINDOW_HEIGHT - 400);
+	menuButton.scale(0.26f, 0.26f);
+
+	//----  text Button ----
+	sf::Font font;
+	font.loadFromFile("C:/Windows/Fonts/georgiaz.ttf");
+	sf::Text textButton = sf::Text("MENU", font);
+	textButton.setPosition(sf::Vector2f(300, WINDOW_HEIGHT - 364));
+	textButton.setFillColor(sf::Color::Black);
+	textButton.setCharacterSize(38);
 
 	drawWithoutDisplay();
-	m_window.draw(backSprite);
+	m_window.draw(background);
 	m_window.draw(menuButton);
+	m_window.draw(textButton);
 	m_window.display();
 
 	while (m_window.isOpen())
@@ -439,7 +450,7 @@ bool Controller::validMovement(const Object& obj)
 
 void Controller::endGameAnnouncement(std::string imaje)
 {
-	auto window = sf::RenderWindow(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "winner");
+	auto window = sf::RenderWindow(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "End Game");
 
 	auto texture = sf::Texture() ;
 	texture.loadFromFile(imaje);
@@ -456,13 +467,85 @@ void Controller::endGameAnnouncement(std::string imaje)
 		{
 		case sf::Event::Closed:
 			window.close();
-			//exit program
 			return;
+		
+		case sf::Event::KeyReleased:
+			switch (event.key.code)
+			{
+			case sf::Keyboard::Escape:
+				window.close();
+				return;
+			}
 		}
+	
+
 		window.clear(RECTANGLE_COLOR_LIGHT);
 		window.draw(sprite);
 		window.display();
 	}
+}
 
-	window.close();
+void Controller::updateStats()
+{
+	std::ifstream ifs;
+	std::string line;
+	std::string statsArr[STATS_ARRAY];
+
+	ifs.open(FILE_STATISTIC);
+	if (!ifs.is_open()) {
+		std::cout << "error file is not open 2!!";
+	}
+
+	for (size_t i = 0; i < STATS_ARRAY; i++)
+	{
+		std::getline(ifs, line);
+		statsArr[i] = line;
+	}
+	ifs.close();
+
+	for (size_t i = 0; i < STATS_ARRAY; i++)
+	{
+		std::cout << statsArr[i] << std::endl;
+	}
+
+	//update stats vec 
+	for (size_t i = 0; i < STATS_ARRAY; i++)
+	{
+		int score;
+		int level;
+		auto istr = std::istringstream(statsArr[i]);
+		istr >> level >> score;
+		std::cout << level << score << std::endl;
+
+		if (m_data.getScore() > score)
+		{
+			for (size_t j = STATS_ARRAY - 1; j > i; j--)
+			{
+				statsArr[j] = statsArr[j-1];
+			}
+			statsArr[i] = std::to_string(m_data.getLevel()) + " " + std::to_string(m_data.getScore());
+			break;
+		}
+	}
+
+// wright to file
+
+	std::ofstream ofs;
+
+	ofs.open(FILE_STATISTIC);
+	if (!ofs.is_open()) {
+		std::cout << "error file is not open 3!!";
+	}
+
+	for (size_t i = 0; i < STATS_ARRAY; i++)
+	{
+		ofs << statsArr[i] << std::endl;
+	}
+
+	for (size_t i = 0; i < STATS_ARRAY; i++)
+	{
+		std::cout << statsArr[i] << std::endl;
+	}
+
+	ofs.close();
 }
