@@ -5,13 +5,14 @@ const int MENU_WIDTH = int(sf::VideoMode::getDesktopMode().width * 0.80);
 const int MENU_HEIGHT = int(sf::VideoMode::getDesktopMode().height);
 
 Menu::Menu() 
-    : m_window(sf::VideoMode(MENU_WIDTH, MENU_HEIGHT), "Example") , m_bigButton(nullptr)
+    : m_window(sf::VideoMode(MENU_WIDTH, MENU_HEIGHT), "Menu") , m_bigButton(nullptr)
 {
     //++++ Font ++++
     m_Font.loadFromFile("C:/Windows/Fonts/georgiaz.ttf");  
     //++++ Sound ++++
     m_Buffer.loadFromFile("resources/musicloop.wav");
     m_sound.setBuffer(m_Buffer);
+    m_sound.setLoop(true);
 
     //++++  image_background  ++++
     m_SpriteBackground.setTexture(Resources::instance().getMenuBackground()); 

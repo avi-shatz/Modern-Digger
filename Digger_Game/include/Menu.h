@@ -1,7 +1,6 @@
 #pragma once
 #include <iostream>
 #include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
 #include <chrono>
 #include <thread>
 #include "controller.h"

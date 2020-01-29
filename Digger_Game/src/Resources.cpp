@@ -8,7 +8,6 @@ const std::string DIGGER_FRONT_IMAGE = "digger_front_image.png";
 const std::string DIAMOND_IMAGE = "diamond_image.png";
 const std::string WALL_IMAGE = "wall_brick_image.png";
 const std::string STONE_IMAGE = "stone_image.png";
-const std::string TIME_SAND_IMAGE = "time_sand.png";
 const std::string DOLAR_IMAGE = "dolar_image.png";
 const std::string STONE_GIFT_IMAGE = "stone_gift.png";
 const std::string TIME_OUT_IMAGE = "time_out.png";
@@ -17,7 +16,13 @@ const std::string CLOCK_IMAGE = "clock_image.png";
 const std::string HEART_IMAGE_1 = "heart_image1.png";
 const std::string HEART_IMAGE_2 = "heart_image2.png";
 const std::string MENU_BUTTON_IMAGE = "Sign.png";
-const std::string MENU_BACKGROUND_IMAGE = "menu_background.jpg";
+const std::string MENU_BACKGROUND_IMAGE = "ImageBackGround.png";
+
+const std::string TOTACH_SOUND = "totach.wav";
+const std::string START_SOUND = "start.wav";
+const std::string EAT_SOUND = "eat_sound.wav";
+const std::string LOOSER_SOUND = "eize_looser_sound.wav";
+const std::string TIME_OUT_SOUND = "time_out_sound.wav";
 
 Resources::Resources()
 {
@@ -38,9 +43,7 @@ Resources::Resources()
 	m_wall.loadFromFile(WALL_IMAGE);
 
 	m_stone.loadFromFile(STONE_IMAGE);
-	
-	m_timeSand.loadFromFile(TIME_SAND_IMAGE);
-	
+		
 	m_timeOut.loadFromFile(TIME_OUT_IMAGE);
 	
 	m_dolar.loadFromFile(DOLAR_IMAGE);
@@ -57,8 +60,13 @@ Resources::Resources()
 	m_menuButton.loadFromFile(MENU_BUTTON_IMAGE);
 	m_pauseBackground.loadFromFile(MENU_BACKGROUND_IMAGE);
 
-	m_menuBackground.loadFromFile("ImageBackGround.png");
+	m_menuBackground.loadFromFile(MENU_BACKGROUND_IMAGE);
 
+	m_start.loadFromFile(START_SOUND);
+	m_totach.loadFromFile(TOTACH_SOUND);
+	m_eat.loadFromFile(EAT_SOUND);
+	m_looser.loadFromFile(LOOSER_SOUND);
+	m_timeOut.loadFromFile(TIME_OUT_SOUND);
 }
 
 Resources& Resources::instance()
@@ -91,10 +99,6 @@ const sf::Texture& Resources::getWall()const
 const sf::Texture& Resources::getStone()const
 {return m_stone;}
 
-const sf::Texture& Resources::getTimeSand() const
-{return m_timeSand;}
-
-
 const sf::Texture& Resources::getTimeOut() const
 {return m_timeOut;}
 
@@ -121,5 +125,30 @@ const sf::Texture& Resources::getMenuButton() const
 
 const sf::Texture& Resources::getMenuBackground() const
 {return m_menuBackground;}
+
+const sf::SoundBuffer& Resources::getTotachBuffer() const
+{
+	return m_totach;
+}
+
+const sf::SoundBuffer& Resources::getStartBuffer() const
+{
+	return m_start;
+}
+
+const sf::SoundBuffer& Resources::getLooserBuffer() const
+{
+	return m_looser;
+}
+
+const sf::SoundBuffer& Resources::getEatBuffer() const
+{
+	return m_eat;
+}
+
+const sf::SoundBuffer& Resources::getTimeOutBuffer() const
+{
+	return m_time;
+}
 
 

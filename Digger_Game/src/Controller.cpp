@@ -33,11 +33,14 @@ void Controller::run()
 
 		sf::Clock clock;
 
+		startLevelAffects();
+		
 		while (levelOn(keepPlaying))
 		{
 			draw();
 
 			float deltaTime = clock.restart().asSeconds();
+			deltaTime = (deltaTime >= 1) ? 0 : deltaTime;
 
 			for (auto& monster : m_monsterVec)
 			{
@@ -93,6 +96,7 @@ void Controller::handlePlayerDeath()
 		if (monster->intersects(m_digger))
 		{
 			m_data.decLives();
+			looseAffects();
 			resetMovablePosition();
 			break;
 		}
@@ -102,11 +106,15 @@ void Controller::handlePlayerDeath()
 bool Controller::levelOn(bool& keepPlaying)
 {
 	if (!m_data.getDiamondsAmount())
+	{
+		endLevelAffects();
 		//if player finished exit 1 loop (go to next level)
-		return false; 
+		return false;
+	}
 
 	if (m_data.getStonesLeft() < 0 || m_data.getTimeLeft() <= 0)
 	{
+		looseAffects();
 		initLevel();
 		m_data.decLives();
 	}
@@ -132,14 +140,14 @@ bool Controller::pauseGame()
 	background.setColor({ 255, 255, 255, 70 });
 
 	sf::Sprite menuButton{Resources::instance().getMenuButton()};
-	menuButton.setPosition(200, WINDOW_HEIGHT - 400);
+	menuButton.setPosition(200.f, WINDOW_HEIGHT - 400.f);
 	menuButton.scale(0.26f, 0.26f);
 
 	//----  text Button ----
 	sf::Font font;
 	font.loadFromFile("C:/Windows/Fonts/georgiaz.ttf");
 	sf::Text textButton = sf::Text("MENU", font);
-	textButton.setPosition(sf::Vector2f(300, WINDOW_HEIGHT - 364));
+	textButton.setPosition(sf::Vector2f(300.f, WINDOW_HEIGHT - 364.f));
 	textButton.setFillColor(sf::Color::Black);
 	textButton.setCharacterSize(38);
 
@@ -503,11 +511,6 @@ void Controller::updateStats()
 	}
 	ifs.close();
 
-	for (size_t i = 0; i < STATS_ARRAY; i++)
-	{
-		std::cout << statsArr[i] << std::endl;
-	}
-
 	//update stats vec 
 	for (size_t i = 0; i < STATS_ARRAY; i++)
 	{
@@ -515,7 +518,6 @@ void Controller::updateStats()
 		int level;
 		auto istr = std::istringstream(statsArr[i]);
 		istr >> level >> score;
-		std::cout << level << score << std::endl;
 
 		if (m_data.getScore() > score)
 		{
@@ -542,10 +544,122 @@ void Controller::updateStats()
 		ofs << statsArr[i] << std::endl;
 	}
 
-	for (size_t i = 0; i < STATS_ARRAY; i++)
+	ofs.close();
+}
+
+void Controller::looseAffects()
+{
+	sf::Clock clock;
+	sf::Sound looser(Resources::instance().getLooserBuffer());
+	looser.play();
+
+	draw();
+
+	while (clock.getElapsedTime().asSeconds() < 1.4f)
 	{
-		std::cout << statsArr[i] << std::endl;
+		// Handle events
+		sf::Event event;
+		if (m_window.pollEvent(event))
+		{
+			switch (event.type)
+			{
+			case sf::Event::Closed:
+				m_window.close();
+				return;
+
+			case sf::Event::KeyReleased:
+				switch (event.key.code)
+				{
+				case sf::Keyboard::Escape:
+					m_window.close();
+					return;
+				}
+			}
+		}
+
+	}
+}
+
+void Controller::endLevelAffects()
+{
+	
+	sf::Clock clock;
+	sf::Sound totach(Resources::instance().getTotachBuffer());
+	totach.play();
+
+	draw();
+
+	while (clock.getElapsedTime().asSeconds() < 2.5f)
+	{
+		// Handle events
+		sf::Event event;
+		if (m_window.pollEvent(event))
+		{
+			switch (event.type)
+			{
+			case sf::Event::Closed:
+				m_window.close();
+				return;
+
+			case sf::Event::KeyReleased:
+				switch (event.key.code)
+				{
+				case sf::Keyboard::Escape:
+					m_window.close();
+					return;
+				}
+			}
+		}
+
 	}
 
-	ofs.close();
+}
+
+void Controller::startLevelAffects()
+{
+	m_data.pauseOrPlayClock();
+
+	sf::Text level;
+	sf::Font font;
+	sf::Clock clock;
+	sf::Sound start(Resources::instance().getStartBuffer());
+	start.play();
+
+	font.loadFromFile("C:/Windows/Fonts/georgiaz.ttf");
+
+	level = sf::Text("", font);
+	level.setPosition(sf::Vector2f(470, 250));
+	level.setFillColor(sf::Color::Black);
+	level.setCharacterSize(180);
+	level.setString("Level    " + std::to_string(m_data.getLevel()));
+
+	drawWithoutDisplay();
+	m_window.draw(level);
+	m_window.display();
+
+	while(clock.getElapsedTime().asSeconds() < 2.5f)
+	{
+		// Handle events
+		sf::Event event;
+		if (m_window.pollEvent(event))
+		{
+			switch (event.type)
+			{
+			case sf::Event::Closed:
+				m_window.close();
+				return;
+
+			case sf::Event::KeyReleased:
+				switch (event.key.code)
+				{
+				case sf::Keyboard::Escape:
+					m_window.close();
+					return;
+				}
+			}
+		}
+
+	}
+
+	m_data.pauseOrPlayClock();
 }

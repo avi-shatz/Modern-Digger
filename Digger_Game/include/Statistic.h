@@ -1,7 +1,7 @@
 #pragma once
 #include "controller.h"
 
-const std::string STRSTATISTIC = "The last five records:";
+const std::string STRSTATISTIC = "Top " + std::to_string(STATS_ARRAY) + " records:";
 const std::string STRSCORS = "   Scors: ";
 const std::string STRLEVEL = "Level: ";	 
 

@@ -16,7 +16,6 @@ public:
 	const sf::Texture& getDiamond()const;
 	const sf::Texture& getWall()const;
 	const sf::Texture& getStone()const;
-	const sf::Texture& getTimeSand()const;
 	const sf::Texture& getTimeOut()const;
 	const sf::Texture& getDolar()const;
 	const sf::Texture& getStoneGift()const;
@@ -26,6 +25,12 @@ public:
 	const sf::Texture& getHeart2()const;
 	const sf::Texture& getMenuButton()const;
 	const sf::Texture& getMenuBackground()const;
+
+	const sf::SoundBuffer& getTotachBuffer()const;
+	const sf::SoundBuffer& getStartBuffer()const;
+	const sf::SoundBuffer& getLooserBuffer()const;
+	const sf::SoundBuffer& getEatBuffer()const;
+	const sf::SoundBuffer& getTimeOutBuffer()const;
 
 
 private:
@@ -39,7 +44,6 @@ private:
 	sf::Texture m_diamond;
 	sf::Texture m_wall;
 	sf::Texture m_stone;
-	sf::Texture m_timeSand;
 	sf::Texture m_timeOut;
 	sf::Texture m_dolar;
 	sf::Texture m_stoneGift;
@@ -53,4 +57,9 @@ private:
 	sf::Texture m_menuButton;
 	sf::Texture m_menuBackground;
 	
+	sf::SoundBuffer m_totach;
+	sf::SoundBuffer m_start;
+	sf::SoundBuffer m_looser;
+	sf::SoundBuffer m_eat;
+	sf::SoundBuffer m_time;
 };

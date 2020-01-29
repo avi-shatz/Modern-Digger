@@ -45,6 +45,10 @@ private:
 	void endGameAnnouncement(std::string imaje);
 	void updateStats();
 
+	void looseAffects();
+	void endLevelAffects();
+	void startLevelAffects();
+
 // ------- members -----------
 
 	sf::RenderWindow m_window;

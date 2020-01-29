@@ -1,4 +1,5 @@
 ﻿configure_file ("Board.txt" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("stats.txt" ${CMAKE_BINARY_DIR} COPYONLY)
 
 configure_file ("digger_left_image.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("digger_right_image.png" ${CMAKE_BINARY_DIR} COPYONLY)
@@ -22,9 +23,15 @@ configure_file ("ImageBackGround.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("super.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("butterfly_.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Sign.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("musicloop.wav" ${CMAKE_BINARY_DIR}/resources COPYONLY)
-configure_file ("stats.txt" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("background_statistic.png" ${CMAKE_BINARY_DIR} COPYONLY)  
 configure_file ("goback.png" ${CMAKE_BINARY_DIR} COPYONLY)  
 
 
+configure_file ("musicloop.wav" ${CMAKE_BINARY_DIR}/resources COPYONLY)
+configure_file ("start.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("totach.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("eat_sound.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("eat_sound2.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("eize_looser_sound.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("looser_sound.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("time_out_sound.wav" ${CMAKE_BINARY_DIR} COPYONLY)
