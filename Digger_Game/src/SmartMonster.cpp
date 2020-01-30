@@ -2,6 +2,8 @@
 #include "EdibleObject.h"
 #include "Controller.h"
 
+const float SMART_MONSTER_SPEED = 58;
+
 SmartMonster::SmartMonster(const sf::Vector2f position)
 	:Monster(position), m_chaseDigger(true),
     m_searchWidthFirst((bool)random_generator(0, 1))
@@ -42,7 +44,7 @@ void SmartMonster::move(float deltaTime, Controller& controller)
         }
     }
 
-    float pixMove = deltaTime * MONSTER_SPEED;
+    float pixMove = deltaTime * SMART_MONSTER_SPEED;
 
     while (true) {
         
@@ -82,6 +84,6 @@ void SmartMonster::move(float deltaTime, Controller& controller)
 void SmartMonster::setSprite(const sf::Vector2f position)
 {
     m_sprite.setTexture(Resources::instance().getSmartMonster());
-    m_sprite.setScale({ 0.07f, 0.07f });
+    m_sprite.setScale({ 0.75f, 0.8f });
     m_sprite.setPosition(position);
 }

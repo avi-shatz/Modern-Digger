@@ -10,12 +10,13 @@ Menu::Menu()
     //++++ Font ++++
     m_Font.loadFromFile("C:/Windows/Fonts/georgiaz.ttf");  
     //++++ Sound ++++
-    m_Buffer.loadFromFile("resources/musicloop.wav");
+    m_Buffer.loadFromFile("musicloop.wav");
     m_sound.setBuffer(m_Buffer);
     m_sound.setLoop(true);
 
     //++++  image_background  ++++
     m_SpriteBackground.setTexture(Resources::instance().getMenuBackground()); 
+    m_SpriteBackground.setScale(3.1f, 3.f);
 
     //++++  image_digger ++++
     CreateDigger();
@@ -135,7 +136,7 @@ void Menu::CreateDigger()
     }
     m_SpriteDigger.setTexture(m_TextDigger);
     m_SpriteDigger.setPosition(sf::Vector2f(395, 665));
-    m_SpriteDigger.scale(0.15f, 0.15f);
+    m_SpriteDigger.scale(0.35f, 0.35f);
 }
 
 void Menu::CreateSign()

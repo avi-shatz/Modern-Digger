@@ -20,7 +20,7 @@ const std::string MENU_BACKGROUND_IMAGE = "ImageBackGround.png";
 
 const std::string TOTACH_SOUND = "totach.wav";
 const std::string START_SOUND = "start.wav";
-const std::string EAT_SOUND = "eat_sound.wav";
+const std::string EAT_SOUND = "eat_sound2.wav";
 const std::string LOOSER_SOUND = "eize_looser_sound.wav";
 const std::string TIME_OUT_SOUND = "time_out_sound.wav";
 
@@ -66,7 +66,7 @@ Resources::Resources()
 	m_totach.loadFromFile(TOTACH_SOUND);
 	m_eat.loadFromFile(EAT_SOUND);
 	m_looser.loadFromFile(LOOSER_SOUND);
-	m_timeOut.loadFromFile(TIME_OUT_SOUND);
+	m_time.loadFromFile(TIME_OUT_SOUND);
 }
 
 Resources& Resources::instance()

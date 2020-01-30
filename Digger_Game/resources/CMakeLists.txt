@@ -27,7 +27,7 @@ configure_file ("background_statistic.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("goback.png" ${CMAKE_BINARY_DIR} COPYONLY)  
 
 
-configure_file ("musicloop.wav" ${CMAKE_BINARY_DIR}/resources COPYONLY)
+configure_file ("musicloop.wav" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("start.wav" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("totach.wav" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("eat_sound.wav" ${CMAKE_BINARY_DIR} COPYONLY)

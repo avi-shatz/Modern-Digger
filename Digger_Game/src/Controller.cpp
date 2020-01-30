@@ -8,7 +8,8 @@
 
 Controller::Controller()
 	:m_window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Digger Game"),
-	 m_data(), m_fileLevel(FILE_PATH), m_digger({0,0}), m_levelTime(0)
+	 m_data(), m_fileLevel(FILE_PATH), m_digger({0,0}), m_levelTime(0) ,
+	m_eatSound(Resources::instance().getEatBuffer())
 {
 	//m_window.setFramerateLimit(90);
 
@@ -26,6 +27,9 @@ void Controller::run()
 
 	while (keepPlaying)
 	{
+		if (!m_window.isOpen())
+			return;
+
 		if (!readLevel()) {
 			win = true;
 			break;
@@ -35,7 +39,7 @@ void Controller::run()
 
 		startLevelAffects();
 		
-		while (levelOn(keepPlaying))
+		while (levelOn(keepPlaying) && m_window.isOpen())
 		{
 			draw();
 
@@ -136,7 +140,7 @@ bool Controller::pauseGame()
 	m_data.pauseOrPlayClock();
 	sf::Sprite background(Resources::instance().getGameBackround());
 	background.setPosition(0, 0);
-	background.scale(1.1f, 1.1f);
+	background.scale(4.1f, 4.1f);
 	background.setColor({ 255, 255, 255, 70 });
 
 	sf::Sprite menuButton{Resources::instance().getMenuButton()};
@@ -242,7 +246,7 @@ void Controller::drawWithoutDisplay()
 
 	sf::Sprite background(Resources::instance().getGameBackround());
 	background.setPosition(0, 0);
-	background.scale(1.1f, 1.1f);
+	background.scale(4.1f, 4.1f);
 	background.setColor({ 255, 255, 255, 180 });
 	m_window.draw(background);
 
@@ -405,6 +409,7 @@ bool Controller::handleMovement(const Digger& obj)
 		if (obj.intersects(*edible))
 		{
 			edible->eatWithUpdate(m_data);
+			m_eatSound.play();
 			return true;
 		}
 	}
@@ -464,8 +469,8 @@ void Controller::endGameAnnouncement(std::string imaje)
 	texture.loadFromFile(imaje);
 
 	auto sprite = sf::Sprite(texture);
-	sprite.setPosition(0, 0);
-	sprite.scale({ 0.5f, 0.35f });
+	sprite.setPosition(400, 0);
+	sprite.scale({ 2.f, 2.f });
 
 	// Handle events
 	sf::Event event;

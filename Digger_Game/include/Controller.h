@@ -65,6 +65,8 @@ private:
 	std::vector<std::unique_ptr <EdibleObject>> m_edibleVec;
 	std::vector<std::unique_ptr <Wall>> m_wallVec;
 	
+	sf::Sound m_eatSound;
+
 	// level board size
 	int m_rows = 0;
 	int m_columns = 0;
