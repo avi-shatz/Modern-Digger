@@ -233,6 +233,6 @@ void Data::initAllText()
 
 	m_timeOut.setTexture(Resources::instance().getTimeOut());
 	m_timeOut.setPosition(sf::Vector2f{ float(WINDOW_WIDTH) / 6, 0 });
-	m_timeOut.setScale(0.1f, 0.1f);
-	m_timeOut.setColor({ 255, 255, 255, 40 });
+	m_timeOut.setScale(2.2f, 2.2f);
+	m_timeOut.setColor({ 255, 255, 255, 50 });
 }
