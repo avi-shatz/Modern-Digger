@@ -9,6 +9,7 @@ Stone::Stone(const sf::Vector2f position)
 void Stone::eatWithUpdate(Data& data)
 {
 	eat();
+	data.incScore(25);
 	data.decStonesLeft();
 }
 

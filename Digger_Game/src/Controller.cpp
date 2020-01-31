@@ -642,7 +642,7 @@ void Controller::startLevelAffects()
 	m_window.draw(level);
 	m_window.display();
 
-	while(clock.getElapsedTime().asSeconds() < 2.5f)
+	while(clock.getElapsedTime().asSeconds() < 2.0f)
 	{
 		// Handle events
 		sf::Event event;

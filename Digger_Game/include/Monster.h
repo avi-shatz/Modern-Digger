@@ -1,7 +1,7 @@
 #pragma once
 #include "MovableObject.h"
 
-const float MONSTER_SPEED = 70;
+const float MONSTER_SPEED = 75;
 
 class Monster : public MovableObject
 {

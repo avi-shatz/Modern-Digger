@@ -1,7 +1,7 @@
 #pragma once
 #include "MovableObject.h"
 
-const float DIGGER_SPEED = 180;
+const float DIGGER_SPEED = 195;
 
 class Digger : public MovableObject
 {

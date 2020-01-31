@@ -2,7 +2,7 @@
 #include "EdibleObject.h"
 #include "Controller.h"
 
-const float SMART_MONSTER_SPEED = 58;
+const float SMART_MONSTER_SPEED = 65;
 
 SmartMonster::SmartMonster(const sf::Vector2f position)
 	:Monster(position), m_chaseDigger(true),
@@ -84,6 +84,6 @@ void SmartMonster::move(float deltaTime, Controller& controller)
 void SmartMonster::setSprite(const sf::Vector2f position)
 {
     m_sprite.setTexture(Resources::instance().getSmartMonster());
-    m_sprite.setScale({ 0.75f, 0.8f });
+    m_sprite.setScale({ 0.70f, 0.8f });
     m_sprite.setPosition(position);
 }

@@ -2,7 +2,7 @@
 #include "controller.h"
 
 const std::string STRSTATISTIC = "Top " + std::to_string(STATS_ARRAY) + " records:";
-const std::string STRSCORS = "   Scors: ";
+const std::string STRSCORS = "   Score: ";
 const std::string STRLEVEL = "Level: ";	 
 
 class Statistic

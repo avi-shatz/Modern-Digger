@@ -8,7 +8,7 @@ ScoreGift::ScoreGift(const sf::Vector2f position)
 
 void ScoreGift::eatWithUpdate(Data& data)
 {
-	data.incScore(25);
+	data.incScore(40);
 	eat();
 }
 
