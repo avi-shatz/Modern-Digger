@@ -1,6 +1,6 @@
 # Modern-Digger
 
-## A Graphic rich 2d Adventure video game. 
+## A Graphicly rich 2d Adventure video game. 
 
 The monsters in the game implements some uniqe path finding algorithms to find the player in real time.
 
