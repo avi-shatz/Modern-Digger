@@ -1,2 +1,6 @@
-# Digger_Project_2019
-a Digger game written in cpp, using sfml on visual sudio
+# Modern-Digger
+A Graphic rich 2d Adventure video game. 
+The monsters in the game implements some uniqe path finding algorithms to find the player in real time.
+
+Written in C++ and using SFML library
+Ide: Visual Studio
